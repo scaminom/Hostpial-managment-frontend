@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { LayoutService } from '../../layout/app.layout.service';
+import { LayoutService } from '../../layout/services/app.layout.service';
 
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
