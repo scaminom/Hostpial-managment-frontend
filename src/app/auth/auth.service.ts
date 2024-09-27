@@ -43,14 +43,15 @@ export class AuthService {
 
   checkToken(): boolean {
     const token = this.cookieService.get('token');
-    if (!token) {
-      this.isAuthenticated.set(false);
-      return false;
+
+    if (token) {
+      const decodedToken = jwtDecode<DecodedToken>(token);
+      const isValid = decodedToken.exp * 1000 > Date.now();
+      this.isAuthenticated.set(isValid);
+      return isValid;
     }
-    const decodedToken = jwtDecode<DecodedToken>(token);
-    const isValid = decodedToken.exp * 1000 > Date.now();
-    this.isAuthenticated.set(isValid);
-    return isValid;
+    this.isAuthenticated.set(false);
+    return false;
   }
 
   getToken(): string | null {
