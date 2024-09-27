@@ -4,16 +4,19 @@ import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, catchError, tap } from 'rxjs';
 import { DecodedToken, LoginParams, User } from './interfaces';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private http = inject(HttpClient);
   private cookieService = inject(CookieService);
-  private readonly baseUrl = 'http://localhost:3000';
-  private isAuthenticated = signal<boolean>(false);
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   isAuthenticated$ = computed(() => this.isAuthenticated);
+  private isAuthenticated = signal<boolean>(false);
+  private readonly baseUrl = 'http://localhost:3000';
 
   constructor() {
     this.checkToken();
@@ -38,6 +41,7 @@ export class AuthService {
   logout(): void {
     this.cookieService.delete('token');
     this.isAuthenticated.set(false);
+    this.router.navigate(['/auth/login']);
     console.log('User logged out');
   }
 
