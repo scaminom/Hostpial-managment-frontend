@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable, catchError, map, tap, toArray } from 'rxjs';
 import snakecaseKeys from 'snakecase-keys';
 import {
   Patient,
   PatientParams,
   PatientReponse,
+  PatientsReponse,
 } from '../interfaces/patient.interface';
 import camelcaseKeys from 'camelcase-keys';
 
@@ -15,6 +16,23 @@ import camelcaseKeys from 'camelcase-keys';
 export class PatientService {
   private http = inject(HttpClient);
   private readonly baseUrl = 'http://localhost:3000';
+
+  getPatients(): Observable<Patient[]> {
+    const url = `${this.baseUrl}/api/v1/patients`;
+
+    return this.http.get<PatientsReponse>(url).pipe(
+      catchError((error) => {
+        console.error('Error fetching patients', error);
+        throw error;
+      }),
+      map((response) => {
+        const camelCasePatients = response.data.patients.map(
+          (patient) => camelcaseKeys({ ...patient }) as Patient,
+        );
+        return camelCasePatients;
+      }),
+    );
+  }
 
   createPatient(patientParams: PatientParams): Observable<Patient> {
     const url = `${this.baseUrl}/api/v1/patients`;

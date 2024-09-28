@@ -1,129 +1,125 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
-import { Table, TableModule } from 'primeng/table';
-import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
+import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { DropdownModule } from 'primeng/dropdown';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { DialogModule } from 'primeng/dialog';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { MessageService } from 'primeng/api';
 
-interface InventoryStatus {
-  label: string;
-  value: string;
-}
-export interface Product {
-  id?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: InventoryStatus;
-  category?: string;
-  image?: string;
-  rating?: number;
+import { Patient } from '../../interfaces/patient.interface';
+import { PatientService } from '../../services/patient.service';
+
+interface Cols {
+  field: string;
+  header: string;
 }
 
 @Component({
   selector: 'app-patient-table',
   standalone: true,
   imports: [
-    CommonModule,
-    TableModule,
-    FileUploadModule,
     ButtonModule,
+    CommonModule,
+    DialogModule,
+    InputTextModule,
     RippleModule,
+    RouterLink,
+    TableModule,
     ToastModule,
     ToolbarModule,
-    InputTextModule,
-    InputTextareaModule,
-    DropdownModule,
-    RadioButtonModule,
-    InputNumberModule,
-    DialogModule,
-    CurrencyPipe,
   ],
   templateUrl: './patient-table.component.html',
   providers: [MessageService],
 })
 export class PatientTableComponent implements OnInit {
-  deleteProductsDialog: boolean = false;
-  productDialog: boolean = false;
-  deleteProductDialog: boolean = false;
+  deletePatientDialog = signal(false);
+  deletePatientsDialog = signal(false);
 
-  cols: any[] = [];
-  statuses: any[] = [];
-  product: Product = {};
-  products: Product[] = [];
-  selectedProducts: Product[] = [];
+  cols: Cols[] = [];
+  patient = signal<Patient | null>(null);
+  patients = signal<Patient[]>([]);
+  selectedPatients = signal<Patient[]>([]);
 
   private messageService = inject(MessageService);
+  private patientService = inject(PatientService);
 
   ngOnInit(): void {
+    this.loadPatients();
+
     this.cols = [
-      { field: 'product', header: 'Product' },
-      { field: 'price', header: 'Price' },
-      { field: 'category', header: 'Category' },
-      { field: 'rating', header: 'Reviews' },
-      { field: 'inventoryStatus', header: 'Status' },
-    ];
-
-    this.statuses = [
-      { label: 'INSTOCK', value: 'instock' },
-      { label: 'LOWSTOCK', value: 'lowstock' },
-      { label: 'OUTOFSTOCK', value: 'outofstock' },
+      { field: 'firstName', header: 'First Name' },
+      { field: 'lastName', header: 'Last Name' },
+      { field: 'insuranceNumber', header: 'Insurance Number' },
+      { field: 'dateOfBirth', header: 'Date of Birth' },
+      { field: 'gender', header: 'Gender' },
+      { field: 'phoneNumber', header: 'Phone Number' },
     ];
   }
 
-  editProduct(product: Product) {
-    this.product = { ...product };
-    this.productDialog = true;
+  loadPatients(): void {
+    this.patientService.getPatients().subscribe({
+      next: (patients) => {
+        console.log('Patients fetched', patients);
+        this.patients.set(patients);
+      },
+      error: (error) => {
+        console.error('Error fetching patients', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load patients',
+          life: 3000,
+        });
+      },
+    });
   }
 
-  deleteProduct(product: Product) {
-    this.deleteProductDialog = true;
-    this.product = { ...product };
+  deletePatient(patient: Patient) {
+    this.deletePatientDialog.set(true);
+    this.patient.set(patient);
   }
 
-  deleteSelectedProducts() {
-    this.deleteProductsDialog = true;
+  deleteSelectedPatients() {
+    this.deletePatientsDialog.set(true);
   }
 
   confirmDeleteSelected() {
-    this.deleteProductsDialog = false;
-    this.products = this.products.filter(
-      (val) => !this.selectedProducts.includes(val),
+    this.deletePatientsDialog.set(false);
+    this.patients.update((currentPatients) =>
+      currentPatients.filter(
+        (patient) => !this.selectedPatients().includes(patient),
+      ),
     );
     this.messageService.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Products Deleted',
+      detail: 'Patients Deleted',
       life: 3000,
     });
-    this.selectedProducts = [];
+    this.selectedPatients.set([]);
   }
 
   confirmDelete() {
-    this.deleteProductDialog = false;
-    this.products = this.products.filter((val) => val.id !== this.product.id);
+    this.deletePatientDialog.set(false);
+    this.patients.update((currentPatients) =>
+      currentPatients.filter((patient) => patient !== this.patient()),
+    );
+
     this.messageService.add({
       severity: 'success',
       summary: 'Successful',
-      detail: 'Product Deleted',
+      detail: 'Patient Deleted',
       life: 3000,
     });
-    this.product = {};
+    this.patient.set(null);
   }
 
-  onGlobalFilter(table: Table, event: Event) {
+  onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }
