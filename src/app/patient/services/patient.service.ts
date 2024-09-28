@@ -19,7 +19,7 @@ export class PatientService {
   createPatient(patientParams: PatientParams): Observable<Patient> {
     const url = `${this.baseUrl}/api/v1/patients`;
     const body = snakecaseKeys({
-      patient: { ...patientParams.patient, gender: 'Male' },
+      patient: { ...patientParams.patient },
     });
 
     return this.http.post<PatientReponse>(url, body).pipe(

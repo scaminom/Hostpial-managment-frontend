@@ -74,7 +74,11 @@ export class PatientFormComponent implements OnInit {
       ...this.patientForm.value,
       gender: this.patientForm.get('gender')?.value?.code,
     };
-    this.patientService.createPatient({ patient: patientData }).subscribe();
+    this.patientService.createPatient({ patient: patientData }).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+    });
     // }
   }
 }
