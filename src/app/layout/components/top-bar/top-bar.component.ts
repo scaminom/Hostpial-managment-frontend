@@ -39,7 +39,7 @@ export class TopBarComponent implements OnInit {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
         command: () => {
-          this.authService.logout();
+          this.authService.initiateLogout().subscribe();
         },
       },
     ];

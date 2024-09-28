@@ -1,0 +1,110 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="patientForm">
+      <h5>Patient information</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label htmlFor="firstname2">Firstname</label>
+          <input
+            pInputText
+            id="firstname2"
+            type="text"
+            formControlName="firstName"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="lastname2">Lastname</label>
+          <input
+            pInputText
+            id="lastname2"
+            type="text"
+            formControlName="lastName"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="insuranceNumber">Insurance number</label>
+          <input
+            pInputText
+            id="insuranceNumber"
+            type="text"
+            formControlName="insuranceNumber"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="dateOfBirth">Date of birth</label>
+          <p-calendar
+            [showIcon]="true"
+            inputId="icon"
+            formControlName="dateOfBirth"
+          ></p-calendar>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="gender">Gender</label>
+          <p-dropdown
+            [options]="dropdownItems"
+            optionLabel="name"
+            formControlName="gender"
+            placeholder="Select gender"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="phoneNumber">Phone number</label>
+          <input
+            pInputText
+            id="phoneNumber"
+            type="text"
+            formControlName="phoneNumber"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="email">Email</label>
+          <input pInputText id="email" type="text" formControlName="email" />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="bloodType">Blod type</label>
+          <input
+            pInputText
+            id="bloodType"
+            type="text"
+            formControlName="bloodType"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="address">Address</label>
+          <input
+            pInputText
+            id="address"
+            type="text"
+            formControlName="address"
+          />
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label htmlFor="allergies">Allergies</label>
+          <input
+            pInputText
+            id="allergies"
+            type="text"
+            formControlName="allergies"
+          />
+        </div>
+      </div>
+
+      <button
+        pButton
+        pRipple
+        label="Enviar"
+        class="w-full p-2 text-xl"
+        (click)="onSendForm()"
+      ></button>
+    </form>
+  </div>
+</div>

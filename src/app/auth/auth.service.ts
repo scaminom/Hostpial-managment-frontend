@@ -28,7 +28,7 @@ export class AuthService {
 
     return this.http.post<User>(url, body).pipe(
       tap((response) => {
-        this.setTokenInCookie(response.token);
+        this.setTokenInCookie(response.data.token);
         console.log('User logged in', response);
       }),
       catchError((error) => {
@@ -38,7 +38,20 @@ export class AuthService {
     );
   }
 
-  logout(): void {
+  initiateLogout(): Observable<void> {
+    const url = `${this.baseUrl}/api/v1/auth/logout`;
+    return this.http.delete<void>(url).pipe(
+      tap(() => {
+        this.completeLogout();
+      }),
+      catchError((error) => {
+        this.completeLogout();
+        throw error;
+      }),
+    );
+  }
+
+  completeLogout(): void {
     this.cookieService.delete('token');
     this.isAuthenticated.set(false);
     this.router.navigate(['/auth/login']);
