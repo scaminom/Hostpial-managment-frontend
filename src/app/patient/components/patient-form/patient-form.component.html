@@ -1,30 +1,28 @@
 <div class="col-12">
   <div class="card">
-    <form [formGroup]="patientForm">
+    <form [formGroup]="patientForm()" (ngSubmit)="onSubmit()">
       <h5>Patient information</h5>
       <div class="p-fluid p-formgrid grid">
         <div class="field col-12 md:col-6">
-          <label htmlFor="firstname2">Firstname</label>
+          <label for="firstname">Firstname</label>
           <input
             pInputText
-            id="firstname2"
+            id="firstname"
             type="text"
             formControlName="firstName"
           />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="lastname2">Lastname</label>
+          <label for="lastname">Lastname</label>
           <input
             pInputText
-            id="lastname2"
+            id="lastname"
             type="text"
             formControlName="lastName"
           />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="insuranceNumber">Insurance number</label>
+          <label for="insuranceNumber">Insurance number</label>
           <input
             pInputText
             id="insuranceNumber"
@@ -32,28 +30,25 @@
             formControlName="insuranceNumber"
           />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="dateOfBirth">Date of birth</label>
+          <label for="dateOfBirth">Date of birth</label>
           <p-calendar
             [showIcon]="true"
-            inputId="icon"
+            inputId="dateOfBirth"
             formControlName="dateOfBirth"
           ></p-calendar>
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="gender">Gender</label>
+          <label for="gender">Gender</label>
           <p-dropdown
-            [options]="dropdownItems"
+            [options]="dropdownItems()"
             optionLabel="name"
             formControlName="gender"
             placeholder="Select gender"
           ></p-dropdown>
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="phoneNumber">Phone number</label>
+          <label for="phoneNumber">Phone number</label>
           <input
             pInputText
             id="phoneNumber"
@@ -61,14 +56,12 @@
             formControlName="phoneNumber"
           />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="email">Email</label>
+          <label for="email">Email</label>
           <input pInputText id="email" type="text" formControlName="email" />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="bloodType">Blod type</label>
+          <label for="bloodType">Blood type</label>
           <input
             pInputText
             id="bloodType"
@@ -76,9 +69,8 @@
             formControlName="bloodType"
           />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="address">Address</label>
+          <label for="address">Address</label>
           <input
             pInputText
             id="address"
@@ -86,9 +78,8 @@
             formControlName="address"
           />
         </div>
-
         <div class="field col-12 md:col-6">
-          <label htmlFor="allergies">Allergies</label>
+          <label for="allergies">Allergies</label>
           <input
             pInputText
             id="allergies"
@@ -97,13 +88,12 @@
           />
         </div>
       </div>
-
       <button
         pButton
-        pRipple
-        label="Enviar"
+        type="submit"
+        label="Save"
         class="w-full p-2 text-xl"
-        (click)="onSendForm()"
+        [disabled]="patientForm().invalid"
       ></button>
     </form>
   </div>

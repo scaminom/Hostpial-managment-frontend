@@ -9,15 +9,6 @@
         class="p-button-success mr-2"
         [routerLink]="['/patient/new']"
       ></button>
-      <button
-        pButton
-        pRipple
-        label="Delete"
-        icon="pi pi-trash"
-        class="p-button-danger"
-        (click)="deleteSelected()"
-        [disabled]="!hasSelectedPatients"
-      ></button>
     </div>
   </ng-template>
 </p-toolbar>

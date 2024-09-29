@@ -1,6 +1,7 @@
 import { ApiResponse } from '../../shared/interfaces/default-response.interface';
 
 export interface Patient {
+  id: number;
   firstName: string;
   lastName: string;
   insuranceNumber: string;
@@ -15,4 +16,4 @@ export interface Patient {
 
 export type PatientReponse = ApiResponse<{ patient: Patient }>;
 export type PatientsReponse = ApiResponse<{ patients: Patient[] }>;
-export type PatientParams = { patient: Patient };
+export type PatientParams = { patient: Omit<Patient, 'id'> };

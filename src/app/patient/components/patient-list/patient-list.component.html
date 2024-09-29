@@ -1,0 +1,29 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card px-6 py-6">
+      <p-toast></p-toast>
+      <app-patient-toolbar
+        [hasSelectedPatients]="selectedPatients().length > 0"
+        (deleteSelectedEvent)="deleteSelectedPatients()"
+      ></app-patient-toolbar>
+
+      <app-patient-table
+        [patients]="patients()"
+        [cols]="cols"
+        (deletePatientEvent)="deletePatient($event)"
+        (editPatientEvent)="editPatient($event)"
+        (selectedPatientsChange)="onSelectedPatientsChange($event)"
+      ></app-patient-table>
+
+      <app-patient-dialog
+        [deletePatientDialog]="deletePatientDialog()"
+        [deletePatientsDialog]="deletePatientsDialog()"
+        [patient]="patient()"
+        (cancelDelete)="deletePatientDialog.set(false)"
+        (confirmDelete)="onConfirmDelete()"
+        (cancelDeleteMultiple)="deletePatientsDialog.set(false)"
+        (confirmDeleteMultiple)="onConfirmDeleteMultiple()"
+      ></app-patient-dialog>
+    </div>
+  </div>
+</div>
