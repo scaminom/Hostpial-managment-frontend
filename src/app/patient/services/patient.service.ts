@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import snakecaseKeys from 'snakecase-keys';
 import {
   Patient,
@@ -56,8 +56,8 @@ export class PatientService {
 
     return this.http.post<PatientReponse>(url, body).pipe(
       catchError((error) => {
-        console.error('Error logging in', error);
-        throw error;
+        console.error('Error logging in', error.error);
+        return throwError(() => error.error);
       }),
       map((response) => {
         return camelcaseKeys({ ...response.data.patient }) as Patient;
@@ -73,8 +73,8 @@ export class PatientService {
 
     return this.http.put<PatientReponse>(url, body).pipe(
       catchError((error) => {
-        console.error('Error logging in', error);
-        throw error;
+        console.error('Error logging in', error.error);
+        return throwError(() => error.error);
       }),
       map((response) => {
         return camelcaseKeys({ ...response.data.patient }) as Patient;
@@ -87,8 +87,8 @@ export class PatientService {
 
     return this.http.delete<PatientReponse>(url).pipe(
       catchError((error) => {
-        console.error('Error fetching patients', error);
-        return of(false);
+        console.error('Error logging in', error.error);
+        return throwError(() => error.error);
       }),
       map(() => {
         return true;

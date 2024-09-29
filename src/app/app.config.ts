@@ -13,6 +13,7 @@ import {
 } from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
 import { tokenInterceptor } from './shared/interceptors/token.interceptor';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +22,6 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(BrowserAnimationsModule),
     CookieService,
     provideAnimations(),
+    MessageService,
   ],
 };

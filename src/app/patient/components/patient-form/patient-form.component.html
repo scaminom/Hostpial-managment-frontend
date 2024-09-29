@@ -11,7 +11,11 @@
             type="text"
             formControlName="firstName"
           />
+          <small class="p-error">
+            <arv-validation-messages for="firstName"></arv-validation-messages>
+          </small>
         </div>
+
         <div class="field col-12 md:col-6">
           <label for="lastname">Lastname</label>
           <input
@@ -20,7 +24,11 @@
             type="text"
             formControlName="lastName"
           />
+          <small class="p-error">
+            <arv-validation-messages for="lastName"></arv-validation-messages>
+          </small>
         </div>
+
         <div class="field col-12 md:col-6">
           <label for="insuranceNumber">Insurance number</label>
           <input
@@ -29,7 +37,13 @@
             type="text"
             formControlName="insuranceNumber"
           />
+          <small class="p-error">
+            <arv-validation-messages
+              for="insuranceNumber"
+            ></arv-validation-messages>
+          </small>
         </div>
+
         <div class="field col-12 md:col-6">
           <label for="dateOfBirth">Date of birth</label>
           <p-calendar
@@ -37,16 +51,41 @@
             inputId="dateOfBirth"
             formControlName="dateOfBirth"
           ></p-calendar>
+          <small class="p-error">
+            <arv-validation-messages for="dateOfBirth">
+              <arv-validation-message key="underage">
+                Patient must be at least 18 years old.
+              </arv-validation-message>
+            </arv-validation-messages>
+          </small>
         </div>
+
         <div class="field col-12 md:col-6">
           <label for="gender">Gender</label>
           <p-dropdown
-            [options]="dropdownItems()"
+            [options]="genderItems()"
             optionLabel="name"
             formControlName="gender"
             placeholder="Select gender"
           ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages for="gender"></arv-validation-messages>
+          </small>
         </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="bloodType">Blood type</label>
+          <p-dropdown
+            [options]="bloodTypes()"
+            optionLabel="name"
+            formControlName="bloodType"
+            placeholder="Select blood type"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages for="bloodType"></arv-validation-messages>
+          </small>
+        </div>
+
         <div class="field col-12 md:col-6">
           <label for="phoneNumber">Phone number</label>
           <input
@@ -55,19 +94,16 @@
             type="text"
             formControlName="phoneNumber"
           />
+          <small class="p-error">
+            <arv-validation-messages
+              for="phoneNumber"
+            ></arv-validation-messages>
+          </small>
         </div>
+
         <div class="field col-12 md:col-6">
           <label for="email">Email</label>
           <input pInputText id="email" type="text" formControlName="email" />
-        </div>
-        <div class="field col-12 md:col-6">
-          <label for="bloodType">Blood type</label>
-          <input
-            pInputText
-            id="bloodType"
-            type="text"
-            formControlName="bloodType"
-          />
         </div>
         <div class="field col-12 md:col-6">
           <label for="address">Address</label>
@@ -77,6 +113,9 @@
             type="text"
             formControlName="address"
           />
+          <small class="p-error">
+            <arv-validation-messages for="address"></arv-validation-messages>
+          </small>
         </div>
         <div class="field col-12 md:col-6">
           <label for="allergies">Allergies</label>
@@ -86,6 +125,9 @@
             type="text"
             formControlName="allergies"
           />
+          <small class="p-error">
+            <arv-validation-messages for="allergies"></arv-validation-messages>
+          </small>
         </div>
       </div>
       <button

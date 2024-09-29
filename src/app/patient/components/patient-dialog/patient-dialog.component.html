@@ -33,33 +33,3 @@
     ></button>
   </ng-template>
 </p-dialog>
-
-<p-dialog
-  [visible]="deletePatientsDialog()"
-  header="Confirm"
-  [modal]="true"
-  [style]="{ width: '450px' }"
->
-  <div class="flex align-items-center justify-content-center">
-    <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-    <span>Are you sure you want to delete selected patients?</span>
-  </div>
-  <ng-template pTemplate="footer">
-    <button
-      pButton
-      pRipple
-      icon="pi pi-times"
-      class="p-button-text"
-      label="No"
-      (click)="onCancelMultiple()"
-    ></button>
-    <button
-      pButton
-      pRipple
-      icon="pi pi-check"
-      class="p-button-text"
-      label="Yes"
-      (click)="onConfirmMultiple()"
-    ></button>
-  </ng-template>
-</p-dialog>

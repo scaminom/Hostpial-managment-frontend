@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -33,7 +32,6 @@ export interface Column {
     ToolbarModule,
   ],
   templateUrl: './patient-table.component.html',
-  providers: [MessageService],
 })
 export class PatientTableComponent {
   patients = input<Patient[]>([]);
@@ -42,13 +40,8 @@ export class PatientTableComponent {
 
   deletePatientEvent = output<Patient>();
   editPatientEvent = output<Patient>();
-  selectedPatientsChange = output<Patient[]>();
 
   selectedPatients = signal<Patient[]>([]);
-
-  test = computed(() =>
-    this.selectedPatientsChange.emit(this.selectedPatients()),
-  );
 
   onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');

@@ -8,8 +8,8 @@ import {
 } from '../patient-table/patient-table.component';
 import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
 import { Patient } from '../../interfaces/patient.interface';
-import { MessageService } from 'primeng/api';
 import { PatientService } from '../../services/patient.service';
+import { MessageWrapedService } from '../../../shared/services/message-wraped.service';
 
 @Component({
   selector: 'app-patient-list',
@@ -21,7 +21,6 @@ import { PatientService } from '../../services/patient.service';
     PatientDialogComponent,
   ],
   templateUrl: './patient-list.component.html',
-  providers: [MessageService],
 })
 export class PatientListComponent implements OnInit {
   deletePatientDialog = signal(false);
@@ -31,7 +30,7 @@ export class PatientListComponent implements OnInit {
   patients = signal<Patient[]>([]);
   selectedPatients = signal<Patient[]>([]);
 
-  private messageService = inject(MessageService);
+  private messageWrapedService = inject(MessageWrapedService);
   private patientService = inject(PatientService);
 
   ngOnInit(): void {
@@ -42,7 +41,8 @@ export class PatientListComponent implements OnInit {
   private loadpatients(): void {
     this.patientService.getPatients().subscribe({
       next: (patients) => this.patients.set(patients),
-      error: (error) => this.handleError(error, 'Failed to load patients'),
+      error: (error) =>
+        this.messageWrapedService.handleError(error, 'Failed to load patients'),
     });
   }
 
@@ -81,22 +81,27 @@ export class PatientListComponent implements OnInit {
   }
 
   onConfirmDelete(): void {
-    // const patientToDelete = this.patient();
-    // if (patientToDelete && patientToDelete.id) {
-    //   this.patientService.deletePatient(patientToDelete.id).subscribe({
-    //     next: (success) => {
-    //       if (success) {
-    //         this.patients.update((currentPatients) =>
-    //           currentPatients.filter((p) => p.id !== patientToDelete.id),
-    //         );
-    //         this.showSuccessMessage('Patient Deleted');
-    //       } else {
-    //         this.handleError(null, 'Failed to delete patient');
-    //       }
-    //     },
-    //     error: (error) => this.handleError(error, 'Failed to delete patient'),
-    //   });
-    // }
+    const patientToDelete = this.patient();
+    if (patientToDelete && patientToDelete.id) {
+      this.patientService.deletePatient(patientToDelete.id).subscribe({
+        next: (success) => {
+          if (success) {
+            this.patients.update((currentPatients) =>
+              currentPatients.filter((p) => p.id !== patientToDelete.id),
+            );
+            this.messageWrapedService.showSuccessMessage('Patient Deleted');
+          } else {
+            this.messageWrapedService.handleError(
+              null,
+              'Failed to delete patient',
+            );
+          }
+        },
+        error: (error) => {
+          this.messageWrapedService.handleError(error, error.message);
+        },
+      });
+    }
     this.deletePatientDialog.set(false);
     this.patient.set(null);
   }
@@ -113,26 +118,7 @@ export class PatientListComponent implements OnInit {
         (patient) => !this.selectedPatients().includes(patient),
       ),
     );
-    this.showSuccessMessage('patients Deleted');
+    this.messageWrapedService.showSuccessMessage('patients Deleted');
     this.selectedPatients.set([]);
-  }
-
-  private showSuccessMessage(detail: string): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Successful',
-      detail,
-      life: 3000,
-    });
-  }
-
-  private handleError(error: any, detail: string): void {
-    console.error('Error:', error);
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail,
-      life: 3000,
-    });
   }
 }

@@ -12,13 +12,10 @@ import { ButtonModule } from 'primeng/button';
 })
 export class PatientDialogComponent {
   deletePatientDialog = input<boolean>(false);
-  deletePatientsDialog = input<boolean>(false);
   patient = input<Patient | null>(null);
 
   cancelDelete = output<void>();
   confirmDelete = output<void>();
-  cancelDeleteMultiple = output<void>();
-  confirmDeleteMultiple = output<void>();
 
   consutructor() {
     console.log(this.deletePatientDialog());
@@ -30,13 +27,5 @@ export class PatientDialogComponent {
 
   onConfirm() {
     this.confirmDelete.emit();
-  }
-
-  onCancelMultiple() {
-    this.cancelDeleteMultiple.emit();
-  }
-
-  onConfirmMultiple() {
-    this.confirmDeleteMultiple.emit();
   }
 }
