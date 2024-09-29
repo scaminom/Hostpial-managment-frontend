@@ -7,9 +7,13 @@ import {
   withFetch,
   withInterceptors,
 } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  BrowserAnimationsModule,
+  provideAnimations,
+} from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
 import { tokenInterceptor } from './shared/interceptors/token.interceptor';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,5 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(), withInterceptors([tokenInterceptor])),
     importProvidersFrom(BrowserAnimationsModule),
     CookieService,
+    provideAnimations(),
+    MessageService,
   ],
 };

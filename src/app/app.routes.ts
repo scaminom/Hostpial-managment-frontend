@@ -8,6 +8,13 @@ export const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
+    children: [
+      {
+        path: 'patient',
+        loadChildren: () =>
+          import('./patient/patient.routes').then((m) => m.PatientRoutes),
+      },
+    ],
     canActivate: [authGuard],
   },
   {
