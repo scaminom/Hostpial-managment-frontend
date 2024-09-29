@@ -40,6 +40,26 @@ export class MenuComponent {
           },
         ],
       },
+      {
+        label: 'Hospital',
+        items: [
+          {
+            label: 'Department',
+            items: [
+              {
+                label: 'List Patients',
+                icon: 'pi pi-fw pi-list',
+                routerLink: ['/patient/'],
+              },
+              {
+                label: 'Create Patient',
+                icon: 'pi pi-fw pi-user-plus',
+                routerLink: ['/patient/new'],
+              },
+            ],
+          },
+        ],
+      },
     ];
   }
 }
