@@ -6,7 +6,6 @@ import { LayoutService } from '../../services/app.layout.service';
   standalone: true,
   imports: [],
   templateUrl: './footer.component.html',
-  styles: ``,
 })
 export class FooterComponent {
   constructor(public layoutService: LayoutService) {}

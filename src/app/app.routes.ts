@@ -14,6 +14,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./patient/patient.routes').then((m) => m.PatientRoutes),
       },
+      {
+        path: 'department',
+        loadChildren: () =>
+          import('./department/department.routes').then(
+            (m) => m.DepartmentRoutes,
+          ),
+      },
     ],
     canActivate: [authGuard],
   },

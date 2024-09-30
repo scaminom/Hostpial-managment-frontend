@@ -5,14 +5,14 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-
-import { MenuItem } from 'primeng/api';
-import { LayoutService } from '../../services/app.layout.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
+import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
-import { AuthService } from '../../../auth/auth.service';
+
+import { AuthService } from '@app/auth/auth.service';
+import { LayoutService } from '../../services/app.layout.service';
 
 @Component({
   selector: 'app-topbar',

@@ -7,7 +7,6 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
   imports: [InputTextModule],
   templateUrl: './search-record.component.html',
-  styles: ``,
 })
 export class SearchRecordComponent {
   search = output<string>();

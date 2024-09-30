@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-department-layout',
   standalone: true,
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './department-layout.component.html',
-  styles: ``
 })
-export class DepartmentLayoutComponent {
-
-}
+export class DepartmentLayoutComponent {}

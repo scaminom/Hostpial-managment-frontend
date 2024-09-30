@@ -1,0 +1,41 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="departmentForm()" (ngSubmit)="onSubmit()">
+      <h5>Department information</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="departmentName">Name</label>
+          <input
+            pInputText
+            id="departmentName"
+            type="text"
+            formControlName="name"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="name"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="departmentFloor">Floor</label>
+          <p-dropdown
+            [options]="floorItems()"
+            optionLabel="name"
+            formControlName="floor"
+            placeholder="Select floor"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages for="floor"></arv-validation-messages>
+          </small>
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="w-full p-2 text-xl"
+        [disabled]="departmentForm().invalid"
+      ></button>
+    </form>
+  </div>
+</div>

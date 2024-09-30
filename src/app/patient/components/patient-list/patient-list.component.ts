@@ -1,44 +1,45 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 
 import { ToastModule } from 'primeng/toast';
-import { PatientToolbarComponent } from '../patient-toolbar/patient-toolbar.component';
-import {
-  Column,
-  PatientTableComponent,
-} from '../patient-table/patient-table.component';
-import { PatientDialogComponent } from '../patient-dialog/patient-dialog.component';
+
 import { Patient } from '../../interfaces/patient.interface';
 import { PatientService } from '../../services/patient.service';
-import { MessageWrapedService } from '../../../shared/services/message-wraped.service';
+
+import { Column } from '@shared/interfaces/column-table.interface';
+import { DialogComponent } from '@shared/components/table/dialog/dialog.component';
+import { MessageWrapedService } from '@shared/services/message-wraped.service';
+import { TableListComponent } from '@shared/components/table/table-list/table-list.component';
+import { ToolbarComponent } from '@shared/components/table/toolbar/toolbar.component';
 
 @Component({
   selector: 'app-patient-list',
   standalone: true,
-  imports: [
-    ToastModule,
-    PatientToolbarComponent,
-    PatientTableComponent,
-    PatientDialogComponent,
-  ],
+  imports: [ToastModule, ToolbarComponent, TableListComponent, DialogComponent],
   templateUrl: './patient-list.component.html',
 })
 export class PatientListComponent implements OnInit {
   deletePatientDialog = signal(false);
-  deletePatientsDialog = signal(false);
   cols: Column[] = [];
+  globalFilterFields: string[] = [
+    'firstName',
+    'lastName',
+    'insuranceNumber',
+    'dateOfBirth',
+    'gender',
+    'phoneNumber',
+  ];
   patient = signal<Patient | null>(null);
   patients = signal<Patient[]>([]);
-  selectedPatients = signal<Patient[]>([]);
 
   private messageWrapedService = inject(MessageWrapedService);
   private patientService = inject(PatientService);
 
   ngOnInit(): void {
-    this.loadpatients();
+    this.loadPatients();
     this.initializeColumns();
   }
 
-  private loadpatients(): void {
+  private loadPatients(): void {
     this.patientService.getPatients().subscribe({
       next: (patients) => this.patients.set(patients),
       error: (error) =>
@@ -51,10 +52,13 @@ export class PatientListComponent implements OnInit {
       { field: 'firstName', header: 'First Name' },
       { field: 'lastName', header: 'Last Name' },
       { field: 'insuranceNumber', header: 'Insurance Number' },
-      { field: 'dateOfBirth', header: 'Date of Birth' },
+      {
+        field: 'dateOfBirth',
+        header: 'Date of Birth',
+        pipe: { name: 'date', args: ['MM/dd/yyyy'] },
+      },
       { field: 'gender', header: 'Gender' },
       { field: 'phoneNumber', header: 'Phone Number' },
-      { field: 'actions', header: 'Actions' },
     ];
   }
 
@@ -63,21 +67,13 @@ export class PatientListComponent implements OnInit {
     this.deletePatientDialog.set(true);
   }
 
-  deleteSelectedPatients(): void {
-    this.deletePatientsDialog.set(true);
-  }
-
   editPatient(patient: Patient): void {
-    // Implement edit functionality
     console.log('Editing patient:', patient);
   }
 
-  onSelectedPatientsChange(patients: Patient[]): void {
-    this.selectedPatients.set(patients);
-  }
-
-  onCancelDelete(): void {
-    this.deletePatientDialog.set(false);
+  getPatientFullName(): string {
+    const patient = this.patient();
+    return patient ? `${patient.firstName} ${patient.lastName}` : '';
   }
 
   onConfirmDelete(): void {
@@ -104,21 +100,5 @@ export class PatientListComponent implements OnInit {
     }
     this.deletePatientDialog.set(false);
     this.patient.set(null);
-  }
-
-  onCancelDeleteMultiple(): void {
-    this.deletePatientsDialog.set(false);
-  }
-
-  onConfirmDeleteMultiple(): void {
-    console.log(this.selectedPatients());
-    this.deletePatientsDialog.set(false);
-    this.patients.update((currentpatients) =>
-      currentpatients.filter(
-        (patient) => !this.selectedPatients().includes(patient),
-      ),
-    );
-    this.messageWrapedService.showSuccessMessage('patients Deleted');
-    this.selectedPatients.set([]);
   }
 }

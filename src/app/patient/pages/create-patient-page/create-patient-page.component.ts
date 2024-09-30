@@ -6,6 +6,5 @@ import { PatientFormComponent } from '../../components/patient-form/patient-form
   standalone: true,
   imports: [PatientFormComponent],
   templateUrl: './create-patient-page.component.html',
-  styles: ``,
 })
 export class CreatePatientPageComponent {}
