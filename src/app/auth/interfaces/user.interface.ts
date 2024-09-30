@@ -5,10 +5,11 @@ export interface User {
   email: string;
   password: string;
   role: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   token: string;
 }
 
 export type UserLoginParams = Pick<User, 'email' | 'password'>;
 export type UserLoginResponse = ApiResponse<{ user: Pick<User, 'token'> }>;
+export type UserRegistrationParams = Omit<User, 'role' | 'token'>;

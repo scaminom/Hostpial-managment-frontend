@@ -1,30 +1,22 @@
+import { UserRegistrationParams } from '@app/auth/interfaces/user.interface';
+import { Department } from '@app/department/interfaces/department.interface';
 import { ApiResponse } from '@app/shared/interfaces/default-response.interface';
-
-export interface DoctorRegistrationData {
-  username: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  speciality: string;
-  licenseNumber: string;
-  departmentId: number;
-}
-
-export type DoctorRegistrationParams = { doctor: DoctorRegistrationData };
 
 export interface Doctor {
   id: number;
   speciality: string;
   licenseNumber: string;
-  userId: number;
+  department: Department;
+  user: UserRegistrationParams;
+}
+
+export interface DoctorCreationParams {
+  speciality: string;
+  licenseNumber: string;
   departmentId: number;
-  user: {
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
+  userAttributes: UserRegistrationParams;
 }
 
 export type DoctorResponse = ApiResponse<{ doctor: Doctor }>;
 export type DoctorsResponse = ApiResponse<{ doctors: Doctor[] }>;
+export type DoctorRegistrationParams = { doctor: DoctorCreationParams };
