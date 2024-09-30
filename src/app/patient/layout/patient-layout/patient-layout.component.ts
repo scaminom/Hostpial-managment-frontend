@@ -6,6 +6,5 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './patient-layout.component.html',
-  styles: ``,
 })
 export class PatientLayoutComponent {}

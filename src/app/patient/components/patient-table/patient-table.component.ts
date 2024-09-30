@@ -1,5 +1,4 @@
-import { Component, computed, input, output, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
@@ -11,18 +10,13 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 
 import { Patient } from '../../interfaces/patient.interface';
-
-export interface Column {
-  field: string;
-  header: string;
-}
+import { Column } from '@shared/interfaces/column-table.interface';
 
 @Component({
   selector: 'app-patient-table',
   standalone: true,
   imports: [
     ButtonModule,
-    CommonModule,
     DialogModule,
     InputTextModule,
     RippleModule,

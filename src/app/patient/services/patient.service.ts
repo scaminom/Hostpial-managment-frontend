@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import snakecaseKeys from 'snakecase-keys';
 import {
   Patient,
@@ -9,13 +9,14 @@ import {
   PatientsReponse,
 } from '../interfaces/patient.interface';
 import camelcaseKeys from 'camelcase-keys';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PatientService {
   private http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:3000';
+  private readonly baseUrl = environment.apiUrl;
 
   getPatientById(id: number): Observable<Patient> {
     const url = `${this.baseUrl}/api/v1/patients/${id}`;

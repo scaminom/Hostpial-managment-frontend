@@ -1,4 +1,4 @@
-import { ApiResponse } from '../../shared/interfaces/default-response.interface';
+import { ApiResponse } from '@shared/interfaces/default-response.interface';
 
 export interface Patient {
   id: number;

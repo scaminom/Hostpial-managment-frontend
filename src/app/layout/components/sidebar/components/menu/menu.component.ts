@@ -7,7 +7,6 @@ import { MenuItemComponent } from '../menu-item/menu-item.component';
   standalone: true,
   imports: [MenuItemComponent],
   templateUrl: './menu.component.html',
-  styles: ``,
 })
 export class MenuComponent {
   model: any[] = [];
@@ -35,6 +34,26 @@ export class MenuComponent {
                 label: 'Create Patient',
                 icon: 'pi pi-fw pi-user-plus',
                 routerLink: ['/patient/new'],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Hospital',
+        items: [
+          {
+            label: 'Department',
+            items: [
+              {
+                label: 'List Departments',
+                icon: 'pi pi-fw pi-list',
+                routerLink: ['/department/'],
+              },
+              {
+                label: 'Create Department',
+                icon: 'pi pi-fw pi-user-plus',
+                routerLink: ['/department/new'],
               },
             ],
           },

@@ -2,24 +2,25 @@
   <div class="col-12">
     <div class="card px-6 py-6">
       <app-toolbar
-        newButtonLabel="New Patient"
-        [newItemRoute]="['/patient/new']"
+        newButtonLabel="New Department"
+        [newItemRoute]="['/department/new']"
       ></app-toolbar>
       <app-table-list
-        [items]="patients()"
+        [items]="departments()"
         [cols]="cols"
+        [tdWidthBody]="'50%'"
         [globalFilterFields]="globalFilterFields"
         dataKey="insuranceNumber"
         tableTitle="Manage Patients"
-        editRoute="/patient/edit"
-        (deleteItem)="deletePatient($event)"
-        (editItem)="editPatient($event)"
+        editRoute="/department/edit"
+        (deleteItem)="deleteDepartment($event)"
+        (editItem)="editDepartment($event)"
       ></app-table-list>
       <app-dialog
-        [showDialog]="deletePatientDialog()"
+        [showDialog]="deleteDepartmentDialog()"
         header="Confirm Patient Deletion"
-        [itemName]="getPatientFullName()"
-        (cancelDelete)="deletePatientDialog.set(false)"
+        [itemName]="getDepartmentFullName()"
+        (cancelDelete)="deleteDepartmentDialog.set(false)"
         (confirmDelete)="onConfirmDelete()"
       ></app-dialog>
     </div>
