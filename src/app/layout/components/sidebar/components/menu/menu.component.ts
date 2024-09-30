@@ -57,6 +57,21 @@ export class MenuComponent {
               },
             ],
           },
+          {
+            label: 'Doctor',
+            items: [
+              {
+                label: 'List Doctors',
+                icon: 'pi pi-fw pi-list',
+                routerLink: ['/department/'],
+              },
+              {
+                label: 'Register Doctor',
+                icon: 'pi pi-fw pi-user-plus',
+                routerLink: ['/department/new'],
+              },
+            ],
+          },
         ],
       },
     ];

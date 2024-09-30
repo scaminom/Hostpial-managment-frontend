@@ -1,6 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { LayoutService } from '../../layout/services/app.layout.service';
-
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import {
@@ -41,7 +40,6 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-
   layoutService = inject(LayoutService);
   private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
@@ -53,10 +51,14 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (!this.loginForm.valid) return;
-
+    console.log(this.loginForm.value);
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
         this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error('Login error', err);
+        // Handle login error (e.g., show error message)
       },
     });
   }

@@ -6,7 +6,7 @@ export const publicGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.checkToken()) {
+  if (authService.isAuthenticated$()) {
     router.navigate(['/']);
     return false;
   } else {
