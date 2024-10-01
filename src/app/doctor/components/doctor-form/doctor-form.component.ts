@@ -4,12 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReactiveValidationModule } from 'angular-reactive-validation';
 
-import { DoctorFacade } from '@app/doctor/facades/doctor.facade';
-import { DepartmentFacade } from '@app/doctor/facades/department.facade';
+import { DoctorFacade } from '@app/doctor/helpers/doctor.facade';
 
 import { DoctorFormService } from '@app/doctor/services/doctor-form.service';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { DoctorCreationParams } from '@app/doctor/interfaces/doctor.interface';
+import { DepartmentFacade } from '@app/department/helpers/department.facade';
 
 @Component({
   selector: 'app-doctor-form',

@@ -4,19 +4,28 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+
+import { ReactiveValidationModule } from 'angular-reactive-validation';
 
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 
 import { AuthService } from '../auth.service';
 import { LayoutService } from '../../layout/services/app.layout.service';
+import { MessageWrapedService } from '@app/shared/services/message-wraped.service';
+import { Validators } from 'angular-reactive-validation';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink, ReactiveFormsModule, PrimeNGModule],
+  imports: [
+    FormsModule,
+    RouterLink,
+    ReactiveFormsModule,
+    PrimeNGModule,
+    ReactiveValidationModule,
+  ],
   templateUrl: './login.component.html',
   styles: [
     `
@@ -32,6 +41,8 @@ import { LayoutService } from '../../layout/services/app.layout.service';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   layoutService = inject(LayoutService);
+
+  private messageService = inject(MessageWrapedService);
   private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
@@ -42,22 +53,24 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (!this.loginForm.valid) return;
-    console.log(this.loginForm.value);
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
+        this.messageService.showSuccessMessage('Logged in successfully');
         this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.error('Login error', err);
-        // Handle login error (e.g., show error message)
       },
     });
   }
 
   initForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      email: ['', [Validators.required('Email is required')]],
+      password: [
+        '',
+        [
+          Validators.required('Password is required'),
+          Validators.minLength(6, 'Password must be at least 6 characters'),
+        ],
+      ],
     });
   }
 }
