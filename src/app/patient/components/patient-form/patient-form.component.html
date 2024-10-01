@@ -1,6 +1,6 @@
 <div class="col-12">
   <div class="card">
-    <form [formGroup]="patientForm()" (ngSubmit)="onSubmit()">
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
       <h5>Patient information</h5>
       <div class="p-fluid p-formgrid grid">
         <div class="field col-12 md:col-6">
@@ -76,7 +76,7 @@
         <div class="field col-12 md:col-6">
           <label for="bloodType">Blood type</label>
           <p-dropdown
-            [options]="bloodTypes()"
+            [options]="bloodTypeItems()"
             optionLabel="name"
             formControlName="bloodType"
             placeholder="Select blood type"
@@ -135,7 +135,7 @@
         type="submit"
         label="Save"
         class="w-full p-2 text-xl"
-        [disabled]="patientForm().invalid"
+        [disabled]="patientForm.invalid"
       ></button>
     </form>
   </div>

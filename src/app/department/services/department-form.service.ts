@@ -26,7 +26,7 @@ export class DepartmentFormService {
 
   patchFormValues(form: FormGroup, department: DepartmentCreationParams): void {
     form.patchValue({
-      name: department.name,
+      ...department,
       floor: this.floorItems().find((item) => item.code === department.floor),
     });
   }
@@ -34,7 +34,7 @@ export class DepartmentFormService {
   prepareDepartmentData(form: FormGroup): DepartmentCreationParams {
     const formValue = form.value;
     return {
-      name: formValue.name,
+      ...formValue,
       floor: formValue.floor.code,
     };
   }
