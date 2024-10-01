@@ -19,8 +19,8 @@ export class DepartmentFormService {
 
   createForm(): FormGroup {
     return this.fb.group({
-      name: ['', Validators.required('First name is required')],
-      floor: ['', Validators.required('Last name is required')],
+      name: ['', Validators.required('Name is required')],
+      floor: ['', Validators.required('Floor name is required')],
     });
   }
 
