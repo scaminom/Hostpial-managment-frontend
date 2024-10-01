@@ -1,30 +1,14 @@
 import { Component, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { RippleModule } from 'primeng/ripple';
-import { TableModule } from 'primeng/table';
-import { ToastModule } from 'primeng/toast';
-import { ToolbarModule } from 'primeng/toolbar';
-
 import { Patient } from '../../interfaces/patient.interface';
 import { Column } from '@shared/interfaces/column-table.interface';
+import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 
 @Component({
   selector: 'app-patient-table',
   standalone: true,
-  imports: [
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    RippleModule,
-    RouterLink,
-    TableModule,
-    ToastModule,
-    ToolbarModule,
-  ],
+  imports: [PrimeNGModule, RouterLink],
   templateUrl: './patient-table.component.html',
 })
 export class PatientTableComponent {

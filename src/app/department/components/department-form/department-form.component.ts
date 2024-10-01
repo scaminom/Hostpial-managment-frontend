@@ -2,44 +2,23 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { MessageWrapedService } from '@shared/services/message-wraped.service';
-
-import { DepartmentService } from '../../services/department.service';
 import {
   ReactiveValidationModule,
   Validators,
 } from 'angular-reactive-validation';
+
+import { MessageWrapedService } from '@shared/services/message-wraped.service';
+import { DepartmentService } from '../../services/department.service';
+import { DropdownItem } from '@shared/interfaces/drop-down-item.interface';
+
 import { Department } from '../../interfaces/department.interface';
 
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { CalendarModule } from 'primeng/calendar';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { ToastModule } from 'primeng/toast';
-
-interface DropdownItem {
-  name: string;
-  code: string | number;
-}
+import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 
 @Component({
   selector: 'app-department-form',
   standalone: true,
-  imports: [
-    AutoCompleteModule,
-    CalendarModule,
-    DropdownModule,
-    InputMaskModule,
-    InputNumberModule,
-    InputTextModule,
-    InputTextareaModule,
-    ReactiveFormsModule,
-    ReactiveValidationModule,
-    ToastModule,
-  ],
+  imports: [ReactiveFormsModule, ReactiveValidationModule, PrimeNGModule],
   templateUrl: './department-form.component.html',
 })
 export class DepartmentFormComponent {

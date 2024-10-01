@@ -1,0 +1,116 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+      <h5>Doctor information</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="firstname">Firstname</label>
+          <input
+            pInputText
+            id="firstname"
+            type="text"
+            formControlName="firstName"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="firstName"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="lastname">Lastname</label>
+          <input
+            pInputText
+            id="lastname"
+            type="text"
+            formControlName="lastName"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="lastName"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="email">Email</label>
+          <input pInputText id="email" type="text" formControlName="email" />
+          <small class="p-error">
+            <arv-validation-messages for="email"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="username">Username</label>
+          <input
+            pInputText
+            id="username"
+            type="text"
+            formControlName="username"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="username"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="password">Password</label>
+          <input
+            pInputText
+            id="password"
+            type="text"
+            formControlName="password"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="password"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="speciality">Speciality</label>
+          <input
+            pInputText
+            id="speciality"
+            type="text"
+            formControlName="speciality"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="speciality"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="licenseNumber">License number</label>
+          <input
+            pInputText
+            id="licenseNumber"
+            type="text"
+            formControlName="licenseNumber"
+          />
+          <small class="p-error">
+            <arv-validation-messages
+              for="licenseNumber"
+            ></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="department">Department</label>
+          <p-dropdown
+            [options]="departmentItems()"
+            optionLabel="name"
+            formControlName="department"
+            placeholder="Select department"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages for="department"></arv-validation-messages>
+          </small>
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="w-full p-2 text-xl"
+        [disabled]="doctorForm.invalid"
+      ></button>
+    </form>
+  </div>
+</div>

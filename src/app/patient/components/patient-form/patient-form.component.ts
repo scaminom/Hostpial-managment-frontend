@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import {
   AbstractControl,
@@ -7,47 +6,25 @@ import {
   ReactiveFormsModule,
   ValidationErrors,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
-interface DropdownItem {
-  name: string;
-  code: string;
-}
-
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { CalendarModule } from 'primeng/calendar';
 import { PatientService } from '../../services/patient.service';
 import { Patient } from '../../interfaces/patient.interface';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastModule } from 'primeng/toast';
-import { MessageWrapedService } from '../../../shared/services/message-wraped.service';
+
+import { MessageWrapedService } from '@shared/services/message-wraped.service';
+import { DropdownItem } from '@shared/interfaces/drop-down-item.interface';
 
 import {
   ReactiveValidationModule,
   ValidatorDeclaration,
   Validators,
 } from 'angular-reactive-validation';
+import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 
 @Component({
   selector: 'app-patient-form',
   standalone: true,
-  imports: [
-    AutoCompleteModule,
-    CalendarModule,
-    CommonModule,
-    DropdownModule,
-    InputMaskModule,
-    InputNumberModule,
-    InputTextModule,
-    InputTextareaModule,
-    ReactiveFormsModule,
-    ToastModule,
-    ReactiveValidationModule,
-  ],
+  imports: [ReactiveFormsModule, ReactiveValidationModule, PrimeNGModule],
   templateUrl: './patient-form.component.html',
 })
 export class PatientFormComponent implements OnInit {

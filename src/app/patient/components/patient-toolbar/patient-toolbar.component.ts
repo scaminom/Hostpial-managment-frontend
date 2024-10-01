@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ButtonModule } from 'primeng/button';
-import { ToolbarModule } from 'primeng/toolbar';
+import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 
 @Component({
   selector: 'app-patient-toolbar',
   standalone: true,
-  imports: [RouterLink, ButtonModule, ToolbarModule],
+  imports: [RouterLink, PrimeNGModule],
   templateUrl: './patient-toolbar.component.html',
 })
 export class PatientToolbarComponent {}

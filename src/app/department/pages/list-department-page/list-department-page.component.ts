@@ -28,11 +28,11 @@ export class ListDepartmentPageComponent {
   private departmentService = inject(DepartmentService);
 
   ngOnInit(): void {
-    this.loaddepartments();
+    this.loadDepartments();
     this.initializeColumns();
   }
 
-  private loaddepartments(): void {
+  private loadDepartments(): void {
     this.departmentService.getDepartments().subscribe({
       next: (departments) => this.departments.set(departments),
       error: (error) =>
@@ -53,10 +53,6 @@ export class ListDepartmentPageComponent {
   deleteDepartment(department: Department): void {
     this.department.set(department);
     this.deleteDepartmentDialog.set(true);
-  }
-
-  editDepartment(department: Department): void {
-    console.log('Editing department:', department);
   }
 
   getDepartmentFullName(): string {

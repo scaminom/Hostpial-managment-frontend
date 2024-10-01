@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
   Department,
   DepartmentParams,
@@ -20,10 +20,6 @@ export class DepartmentService {
     const url = `${this.baseUrl}/api/v1/departments/${id}`;
 
     return this.http.get<DepartmentReponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching departments', error);
-        throw error;
-      }),
       map((response) => {
         return response.data.department;
       }),
@@ -34,10 +30,6 @@ export class DepartmentService {
     const url = `${this.baseUrl}/api/v1/departments`;
 
     return this.http.get<DepartmentsReponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching patients', error);
-        throw error;
-      }),
       map((response) => {
         return response.data.departments;
       }),
@@ -49,10 +41,6 @@ export class DepartmentService {
     const body = { department: { ...departmentParams.department } };
 
     return this.http.post<DepartmentReponse>(url, body).pipe(
-      catchError((error) => {
-        console.error('Error logging in', error.error);
-        return throwError(() => error.error);
-      }),
       map((response) => {
         return response.data.department;
       }),
@@ -67,10 +55,6 @@ export class DepartmentService {
     const body = { department: { ...departmentParams.department } };
 
     return this.http.put<DepartmentReponse>(url, body).pipe(
-      catchError((error) => {
-        console.error('Error logging in', error.error);
-        return throwError(() => error.error);
-      }),
       map((response) => {
         return response.data.department;
       }),
@@ -81,10 +65,6 @@ export class DepartmentService {
     const url = `${this.baseUrl}/api/v1/departments/${id}`;
 
     return this.http.delete<DepartmentReponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error logging in', error.error);
-        return throwError(() => error.error);
-      }),
       map(() => {
         return true;
       }),
