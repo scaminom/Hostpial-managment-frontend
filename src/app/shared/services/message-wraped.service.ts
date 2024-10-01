@@ -7,12 +7,11 @@ import { MessageService } from 'primeng/api';
 export class MessageWrapedService {
   private messageService = inject(MessageService);
 
-  showSuccessMessage(detail: string): void {
+  showSuccessMessage(message: string): void {
     this.messageService.add({
       severity: 'success',
-      summary: 'Successful',
-      detail,
-      life: 3000,
+      summary: 'Success',
+      detail: message,
     });
   }
 

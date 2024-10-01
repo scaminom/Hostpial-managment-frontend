@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import snakecaseKeys from 'snakecase-keys';
 import {
   Patient,
@@ -22,10 +22,6 @@ export class PatientService {
     const url = `${this.baseUrl}/api/v1/patients/${id}`;
 
     return this.http.get<PatientReponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching patients', error);
-        throw error;
-      }),
       map((response) => {
         return camelcaseKeys({ ...response.data.patient }) as Patient;
       }),
@@ -36,10 +32,6 @@ export class PatientService {
     const url = `${this.baseUrl}/api/v1/patients`;
 
     return this.http.get<PatientsReponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching patients', error);
-        throw error;
-      }),
       map((response) => {
         const camelCasePatients = response.data.patients.map(
           (patient) => camelcaseKeys({ ...patient }) as Patient,
@@ -56,10 +48,6 @@ export class PatientService {
     });
 
     return this.http.post<PatientReponse>(url, body).pipe(
-      catchError((error) => {
-        console.error('Error logging in', error.error);
-        return throwError(() => error.error);
-      }),
       map((response) => {
         return camelcaseKeys({ ...response.data.patient }) as Patient;
       }),
@@ -73,10 +61,6 @@ export class PatientService {
     });
 
     return this.http.put<PatientReponse>(url, body).pipe(
-      catchError((error) => {
-        console.error('Error logging in', error.error);
-        return throwError(() => error.error);
-      }),
       map((response) => {
         return camelcaseKeys({ ...response.data.patient }) as Patient;
       }),
@@ -87,10 +71,6 @@ export class PatientService {
     const url = `${this.baseUrl}/api/v1/patients/${id}`;
 
     return this.http.delete<PatientReponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error logging in', error.error);
-        return throwError(() => error.error);
-      }),
       map(() => {
         return true;
       }),

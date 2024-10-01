@@ -67,10 +67,6 @@ export class PatientListComponent implements OnInit {
     this.deletePatientDialog.set(true);
   }
 
-  editPatient(patient: Patient): void {
-    console.log('Editing patient:', patient);
-  }
-
   getPatientFullName(): string {
     const patient = this.patient();
     return patient ? `${patient.firstName} ${patient.lastName}` : '';

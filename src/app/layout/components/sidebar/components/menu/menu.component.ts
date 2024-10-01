@@ -63,12 +63,12 @@ export class MenuComponent {
               {
                 label: 'List Doctors',
                 icon: 'pi pi-fw pi-list',
-                routerLink: ['/department/'],
+                routerLink: ['/doctor/'],
               },
               {
                 label: 'Register Doctor',
                 icon: 'pi pi-fw pi-user-plus',
-                routerLink: ['/department/new'],
+                routerLink: ['/doctor/new'],
               },
             ],
           },

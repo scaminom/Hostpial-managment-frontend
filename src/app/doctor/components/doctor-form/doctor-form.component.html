@@ -1,6 +1,6 @@
 <div class="col-12">
   <div class="card">
-    <form [formGroup]="doctorForm()" (ngSubmit)="onSubmit()">
+    <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
       <h5>Doctor information</h5>
       <div class="p-fluid p-formgrid grid">
         <div class="field col-12 md:col-6">
@@ -109,7 +109,7 @@
         type="submit"
         label="Save"
         class="w-full p-2 text-xl"
-        [disabled]="doctorForm().invalid"
+        [disabled]="doctorForm.invalid"
       ></button>
     </form>
   </div>

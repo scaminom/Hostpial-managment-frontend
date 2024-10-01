@@ -31,11 +31,14 @@ export class TableListComponent<T> {
   tableTitle = input<string>('Manage Items');
   editRoute = input<string>('/edit');
   tdWidthBody = input<string>('14%');
-
   deleteItem = output<T>();
-  editItem = output<T>();
 
   onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  getNestedPropertyValue(item: any, field: string): any {
+    const props = field.split('.');
+    return props.reduce((obj, prop) => obj && obj[prop], item);
   }
 }

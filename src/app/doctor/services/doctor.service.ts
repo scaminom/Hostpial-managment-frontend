@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@env/environment';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import {
   Doctor,
   DoctorRegistrationParams,
@@ -19,30 +19,25 @@ export class DoctorService {
   private readonly baseUrl = environment.apiUrl;
 
   getDoctorById(id: number): Observable<Doctor> {
-    const url = `${this.baseUrl}/api/v1/patients/${id}`;
+    const url = `${this.baseUrl}/api/v1/doctors/${id}`;
 
     return this.http.get<DoctorResponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching patients', error);
-        throw error;
-      }),
       map((response) => {
-        return camelcaseKeys({ ...response.data.doctor }) as Doctor;
+        return camelcaseKeys(
+          { ...response.data.doctor },
+          { deep: true },
+        ) as Doctor;
       }),
     );
   }
 
   getDoctors(): Observable<Doctor[]> {
-    const url = `${this.baseUrl}/api/v1/patients`;
+    const url = `${this.baseUrl}/api/v1/doctors`;
 
     return this.http.get<DoctorsResponse>(url).pipe(
-      catchError((error) => {
-        console.error('Error fetching patients', error);
-        throw error;
-      }),
       map((response) => {
         const camelCaseDoctors = response.data.doctors.map(
-          (doctor) => camelcaseKeys({ ...doctor }) as Doctor,
+          (doctor) => camelcaseKeys({ ...doctor }, { deep: true }) as Doctor,
         );
         return camelCaseDoctors;
       }),
@@ -54,14 +49,12 @@ export class DoctorService {
     const body = snakecaseKeys({
       doctor: { ...doctorParams.doctor },
     });
-
     return this.http.post<DoctorResponse>(url, body).pipe(
-      catchError((error) => {
-        console.error('Error creating doctor', error.error);
-        return throwError(() => error.error);
-      }),
       map((response) => {
-        return camelcaseKeys({ ...response.data.doctor }) as Doctor;
+        return camelcaseKeys(
+          { ...response.data.doctor },
+          { deep: true },
+        ) as Doctor;
       }),
     );
   }
@@ -75,13 +68,19 @@ export class DoctorService {
       doctor: { ...doctorParams.doctor },
     });
     return this.http.put<DoctorResponse>(url, body).pipe(
-      catchError((error) => {
-        console.error('Error updating doctor', error.error);
-        return throwError(() => error.error);
-      }),
       map((response) => {
-        return camelcaseKeys({ ...response.data.doctor }) as Doctor;
+        return camelcaseKeys(
+          { ...response.data.doctor },
+          { deep: true },
+        ) as Doctor;
       }),
     );
+  }
+
+  deleteDoctor(id: number): Observable<boolean> {
+    const url = `${this.baseUrl}/api/v1/doctors/${id}`;
+    return this.http
+      .delete<{ success: boolean }>(url)
+      .pipe(map((response) => response.success));
   }
 }

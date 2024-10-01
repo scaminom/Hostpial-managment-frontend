@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { CookieService } from 'ngx-cookie-service';
-import { Observable, catchError, map, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { DecodedToken } from './interfaces';
 import { Router } from '@angular/router';
 import {
@@ -36,10 +36,6 @@ export class AuthService {
         this.isAuthenticated.set(true);
         console.log('User logged in', response);
       }),
-      catchError((error) => {
-        console.error('Error logging in', error);
-        throw error;
-      }),
       map(() => void 0),
     );
   }
@@ -49,10 +45,6 @@ export class AuthService {
     return this.http.delete<void>(url).pipe(
       tap(() => {
         this.completeLogout();
-      }),
-      catchError((error) => {
-        this.completeLogout();
-        throw error;
       }),
     );
   }

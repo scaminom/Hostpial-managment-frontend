@@ -1,7 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { LayoutService } from '../../layout/services/app.layout.service';
-import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
 import {
   FormBuilder,
   FormGroup,
@@ -9,23 +6,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { PasswordModule } from 'primeng/password';
-import { InputTextModule } from 'primeng/inputtext';
 import { Router, RouterLink } from '@angular/router';
+
+import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
+
 import { AuthService } from '../auth.service';
+import { LayoutService } from '../../layout/services/app.layout.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    ButtonModule,
-    CheckboxModule,
-    InputTextModule,
-    FormsModule,
-    PasswordModule,
-    RouterLink,
-    ReactiveFormsModule,
-  ],
+  imports: [FormsModule, RouterLink, ReactiveFormsModule, PrimeNGModule],
   templateUrl: './login.component.html',
   styles: [
     `
