@@ -48,7 +48,10 @@ export class DoctorFormService {
       username: doctor.user.username,
       speciality: doctor.speciality,
       licenseNumber: doctor.licenseNumber,
-      department: { name: doctor.department.name, code: doctor.department.id },
+      department: {
+        name: doctor.department?.name,
+        code: doctor.department?.id,
+      },
     });
   }
 
