@@ -33,7 +33,7 @@ export class DoctorFormService {
         '',
         [
           Validators.required('License number is required'),
-          Validators.pattern(/^\d{3}-[A-Z]{3}$/, 'Invalid license number'),
+          Validators.pattern(/^[A-Z]{2}\d{6}$/, 'Invalid license number'),
         ],
       ],
       department: ['', Validators.required('Department is required')],
