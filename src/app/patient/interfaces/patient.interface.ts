@@ -17,3 +17,4 @@ export interface Patient {
 export type PatientReponse = ApiResponse<{ patient: Patient }>;
 export type PatientsReponse = ApiResponse<{ patients: Patient[] }>;
 export type PatientParams = { patient: Omit<Patient, 'id'> };
+export type PatientCreationParams = Omit<Patient, 'id'>;

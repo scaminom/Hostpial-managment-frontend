@@ -1,25 +1,13 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidationErrors,
-} from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { PatientService } from '../../services/patient.service';
-import { Patient } from '../../interfaces/patient.interface';
+import { ReactiveValidationModule } from 'angular-reactive-validation';
 
-import { MessageWrapedService } from '@shared/services/message-wraped.service';
-import { DropdownItem } from '@shared/interfaces/drop-down-item.interface';
-
-import {
-  ReactiveValidationModule,
-  ValidatorDeclaration,
-  Validators,
-} from 'angular-reactive-validation';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
+import { PatientFacade } from '@app/patient/helpers/patient.facade';
+import { PatientFormService } from '@app/patient/services/patient-form.service';
+import { PatientCreationParams } from '@app/patient/interfaces/patient.interface';
 
 @Component({
   selector: 'app-patient-form',
@@ -28,176 +16,62 @@ import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
   templateUrl: './patient-form.component.html',
 })
 export class PatientFormComponent implements OnInit {
-  private activeRoute = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
-  private messageWrapedService = inject(MessageWrapedService);
-  private patientService = inject(PatientService);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private patientFacade = inject(PatientFacade);
+  private patientFormService = inject(PatientFormService);
 
-  patientForm = signal<FormGroup>(this.initForm());
-  private isEditMode = signal<boolean>(false);
-  private patientId = signal<number | null>(null);
+  patientForm!: FormGroup;
+  isEditMode = false;
+  patientId: number | null = null;
 
-  genderItems = signal<DropdownItem[]>([
-    { name: 'Male', code: 'M' },
-    { name: 'Female', code: 'F' },
-  ]);
-
-  bloodTypes = signal<DropdownItem[]>([
-    { name: 'O negative', code: 'O-' },
-    { name: 'O positive', code: 'O+' },
-    { name: 'A negative', code: 'A-' },
-    { name: 'A positive', code: 'A+' },
-    { name: 'B negative', code: 'B-' },
-    { name: 'B positive', code: 'B+' },
-    { name: 'AB negative', code: 'AB-' },
-    { name: 'AB positive', code: 'AB+' },
-  ]);
+  genderItems = this.patientFormService.genderItems;
+  bloodTypeItems = this.patientFormService.bloodTypes;
 
   ngOnInit(): void {
-    this.isEditMode.set(this.router.url.includes('edit'));
+    this.initForm();
+    this.checkEditMode();
+  }
 
-    if (this.isEditMode()) {
-      this.activeRoute.params.subscribe((params) => {
-        const patientId = params['id'];
-        this.patientId.set(patientId);
-        this.retrievePatient(patientId);
+  private initForm(): void {
+    this.patientForm = this.patientFormService.createForm();
+  }
+
+  private checkEditMode(): void {
+    this.isEditMode = this.router.url.includes('edit');
+    if (this.isEditMode) {
+      this.route.params.subscribe((params) => {
+        this.patientId = +params['id'];
+        this.retrievePatient(this.patientId);
       });
     }
   }
 
-  private initForm(): FormGroup {
-    return this.formBuilder.group({
-      firstName: ['', Validators.required('First name is required')],
-      lastName: ['', Validators.required('Last name is required')],
-      insuranceNumber: [
-        '',
-        [
-          Validators.required('Insurance number is required'),
-          Validators.pattern(/^\d{3}-[A-Z]{3}$/, 'Invalid insurance number'),
-        ],
-      ],
-      dateOfBirth: [
-        '',
-        [
-          Validators.required('Date of birth is required'),
-          this.ageValidator(18),
-        ],
-      ],
-      gender: ['', Validators.required('Gender is required')],
-      address: ['', Validators.required('Address is required')],
-      phoneNumber: [
-        '',
-        [
-          Validators.required('Phone number is required'),
-          Validators.pattern(/^\d{10}$/, 'Invalid phone number'),
-        ],
-      ],
-      email: [
-        '',
-        [
-          Validators.required('Email is required'),
-          Validators.email('Invalid email'),
-        ],
-      ],
-      bloodType: ['', Validators.required('Blood type is required')],
-      allergies: ['', Validators.required('Allergies are required')],
-    });
-  }
-
   onSubmit(): void {
-    if (this.patientForm().valid) {
-      const patientData: Patient = {
-        ...this.patientForm().value,
-        gender: this.patientForm().get('gender')?.value?.code,
-        bloodType: this.patientForm().get('bloodType')?.value?.code,
-      };
-
-      if (this.isEditMode()) {
-        const id = this.patientId();
-        if (id !== null) {
-          this.updatePatient(id, patientData);
-        } else {
-          console.error('Cannot update patient: ID is null');
-        }
-      } else {
-        this.createPatient(patientData);
-      }
+    if (this.patientForm.valid) {
+      const patientData: PatientCreationParams =
+        this.patientFormService.preparePatientData(this.patientForm);
+      this.isEditMode
+        ? this.updatePatient(patientData)
+        : this.createPatient(patientData);
     }
   }
 
-  private createPatient(patientData: Patient): void {
-    this.patientService.createPatient({ patient: patientData }).subscribe({
-      next: () => {
-        this.router.navigate(['/patient']);
-        this.messageWrapedService.showSuccessMessage(
-          'Patient created successfully',
-        );
-      },
-      error: (error) => {
-        this.messageWrapedService.handleError(error, error.message);
-      },
-    });
+  private createPatient(patientData: PatientCreationParams): void {
+    this.patientFacade.createPatient(patientData);
   }
 
-  private updatePatient(id: number, patientData: Patient): void {
-    this.patientService.updatePatient(id, { patient: patientData }).subscribe({
-      next: () => {
-        this.router.navigate(['/patient']);
-        this.messageWrapedService.showSuccessMessage(
-          'Patient updated successfully',
-        );
-      },
-      error: (error) => {
-        this.messageWrapedService.handleError(error, error.message);
-      },
-    });
+  private updatePatient(patientData: PatientCreationParams): void {
+    if (this.patientId) {
+      this.patientFacade.updatePatient(this.patientId, patientData);
+    }
   }
 
   private retrievePatient(id: number): void {
-    this.patientService.getPatientById(id).subscribe({
-      next: (patient) => {
-        this.patchFormValues(patient);
-      },
-      error: (error) => {
-        this.messageWrapedService.handleError(error, error.message);
-        this.router.navigate(['/patient']);
-      },
+    this.patientFacade.getPatient(id).subscribe({
+      next: (doctor) =>
+        this.patientFormService.patchFormValues(this.patientForm, doctor),
+      error: () => this.router.navigate(['/patient']),
     });
-  }
-
-  private patchFormValues(patient: Patient): void {
-    this.patientForm().patchValue({
-      ...patient,
-      dateOfBirth: new Date(patient.dateOfBirth),
-      gender: this.genderItems().find((item) => item.code === patient.gender),
-      bloodType: this.bloodTypes().find(
-        (item) => item.code === patient.bloodType,
-      ),
-    });
-  }
-
-  private ageValidator(minAge: number) {
-    return ValidatorDeclaration.wrapSingleArgumentValidator(
-      (minAge: number) => {
-        return (control: AbstractControl): ValidationErrors | null => {
-          if (!control.value) {
-            return null;
-          }
-          const birthDate = new Date(control.value);
-          const today = new Date();
-          let age = today.getFullYear() - birthDate.getFullYear();
-          const monthDiff = today.getMonth() - birthDate.getMonth();
-          if (
-            monthDiff < 0 ||
-            (monthDiff === 0 && today.getDate() < birthDate.getDate())
-          ) {
-            age--;
-          }
-          return age >= minAge ? null : { underage: true };
-        };
-      },
-      'underage',
-    )(minAge);
   }
 }

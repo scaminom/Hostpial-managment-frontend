@@ -1,23 +1,21 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-
+import { Component, inject, signal } from '@angular/core';
+import { Patient } from '@app/patient/interfaces/patient.interface';
+import { PatientService } from '@app/patient/services/patient.service';
+import { DialogComponent } from '@app/shared/components/table/dialog/dialog.component';
+import { TableListComponent } from '@app/shared/components/table/table-list/table-list.component';
+import { ToolbarComponent } from '@app/shared/components/table/toolbar/toolbar.component';
+import { Column } from '@app/shared/interfaces/column-table.interface';
+import { MessageWrapedService } from '@app/shared/services/message-wraped.service';
 import { ToastModule } from 'primeng/toast';
 
-import { Patient } from '../../interfaces/patient.interface';
-import { PatientService } from '../../services/patient.service';
-
-import { Column } from '@shared/interfaces/column-table.interface';
-import { DialogComponent } from '@shared/components/table/dialog/dialog.component';
-import { MessageWrapedService } from '@shared/services/message-wraped.service';
-import { TableListComponent } from '@shared/components/table/table-list/table-list.component';
-import { ToolbarComponent } from '@shared/components/table/toolbar/toolbar.component';
-
 @Component({
-  selector: 'app-patient-list',
+  selector: 'app-list-patient-page',
   standalone: true,
   imports: [ToastModule, ToolbarComponent, TableListComponent, DialogComponent],
-  templateUrl: './patient-list.component.html',
+  templateUrl: './list-patient-page.component.html',
+  styles: ``,
 })
-export class PatientListComponent implements OnInit {
+export class ListPatientPageComponent {
   deletePatientDialog = signal(false);
   cols: Column[] = [];
   globalFilterFields: string[] = [
@@ -67,6 +65,10 @@ export class PatientListComponent implements OnInit {
     this.deletePatientDialog.set(true);
   }
 
+  editPatient(patient: Patient): void {
+    console.log('Editing patient:', patient);
+  }
+
   getPatientFullName(): string {
     const patient = this.patient();
     return patient ? `${patient.firstName} ${patient.lastName}` : '';
@@ -78,19 +80,16 @@ export class PatientListComponent implements OnInit {
       this.patientService.deletePatient(patientToDelete.id).subscribe({
         next: (success) => {
           if (success) {
-            this.patients.update((currentPatients) =>
-              currentPatients.filter((p) => p.id !== patientToDelete.id),
+            this.patients.update((currentpatients) =>
+              currentpatients.filter((p) => p.id !== patientToDelete.id),
             );
-            this.messageWrapedService.showSuccessMessage('Patient Deleted');
+            this.messageWrapedService.showSuccessMessage('patient Deleted');
           } else {
             this.messageWrapedService.handleError(
               null,
               'Failed to delete patient',
             );
           }
-        },
-        error: (error) => {
-          this.messageWrapedService.handleError(error, error.message);
         },
       });
     }

@@ -6,6 +6,7 @@ export interface Department {
   floor: string;
 }
 
+export type DepartmentCreationParams = Omit<Department, 'id'>;
 export type DepartmentReponse = ApiResponse<{ department: Department }>;
 export type DepartmentsReponse = ApiResponse<{ departments: Department[] }>;
 export type DepartmentParams = { department: Omit<Department, 'id'> };
