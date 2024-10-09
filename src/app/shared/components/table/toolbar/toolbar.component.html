@@ -1,14 +1,16 @@
-<p-toolbar styleClass="mb-4">
+<p-toolbar [styleClass]="style()">
   <ng-template pTemplate="left">
     <div class="my-2">
-      <button
-        pButton
-        pRipple
-        [label]="newButtonLabel()"
-        icon="pi pi-plus"
-        class="p-button-success mr-2"
-        [routerLink]="newItemRoute()"
-      ></button>
+      @for (button of buttons(); track button.label) {
+        <button
+          pButton
+          pRipple
+          [label]="button.label"
+          [icon]="button.icon"
+          [class]="button.class || 'p-button-success mr-2'"
+          [routerLink]="button.route"
+        ></button>
+      }
     </div>
   </ng-template>
 </p-toolbar>

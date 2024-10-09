@@ -16,6 +16,12 @@ import { DialogModule } from 'primeng/dialog';
 import { RippleModule } from 'primeng/ripple';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
+import { MenuModule } from 'primeng/menu';
+import { TagModule } from 'primeng/tag';
+import { ChipModule } from 'primeng/chip';
+import { AccordionModule } from 'primeng/accordion';
+import { TabViewModule } from 'primeng/tabview';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 @NgModule({
   declarations: [],
@@ -36,6 +42,12 @@ import { TableModule } from 'primeng/table';
     RippleModule,
     ToolbarModule,
     TableModule,
+    MenuModule,
+    TagModule,
+    ChipModule,
+    AccordionModule,
+    TabViewModule,
+    SplitButtonModule,
   ],
   exports: [
     AutoCompleteModule,
@@ -54,6 +66,12 @@ import { TableModule } from 'primeng/table';
     RippleModule,
     ToolbarModule,
     TableModule,
+    MenuModule,
+    TagModule,
+    ChipModule,
+    AccordionModule,
+    TabViewModule,
+    SplitButtonModule,
   ],
 })
 export class PrimeNGModule {}

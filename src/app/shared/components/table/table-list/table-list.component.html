@@ -1,77 +1,72 @@
 <p-table
-  #dt
-  [value]="items()"
-  [columns]="cols()"
+  #dataTable
+  [value]="tableData()"
+  [columns]="tableColumns()"
   responsiveLayout="scroll"
   [rows]="10"
-  [globalFilterFields]="globalFilterFields()"
+  [globalFilterFields]="searchableFields()"
   [rowHover]="true"
-  [dataKey]="dataKey()"
+  [dataKey]="uniqueIdentifier()"
   [tableStyle]="{ 'min-width': '75rem' }"
 >
   <ng-template pTemplate="caption">
     <div
       class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
     >
-      <h5 class="m-0">{{ tableTitle() }}</h5>
+      <h5 class="m-0">{{ tableName() }}</h5>
       <span class="block mt-2 md:mt-0 p-input-icon-left">
         <i class="pi pi-search"></i>
         <input
           pInputText
           type="text"
-          (input)="onGlobalFilter(dt, $event)"
+          (input)="applyGlobalFilter(dataTable, $event)"
           placeholder="Search..."
           class="w-full sm:w-auto"
         />
       </span>
     </div>
   </ng-template>
-
   <ng-template pTemplate="header">
     <tr>
-      @for (col of cols(); track col.field) {
-        <th [pSortableColumn]="col.field">
-          {{ col.header }}
-          <p-sortIcon [field]="col.field"></p-sortIcon>
+      @for (column of tableColumns(); track column.field) {
+        <th [pSortableColumn]="column.field">
+          {{ column.header }}
+          <p-sortIcon [field]="column.field"></p-sortIcon>
         </th>
       }
       <th>Actions</th>
     </tr>
   </ng-template>
-
-  <ng-template pTemplate="body" let-item>
+  <ng-template pTemplate="body" let-rowData>
     <tr>
-      @for (col of cols(); track col.field) {
-        <td [style.width]="tdWidthBody()" style="min-width: 10rem">
-          <span class="p-column-title">{{ col.header }}</span>
-          @if (col.pipe) {
+      @for (column of tableColumns(); track column.field) {
+        <td [style.width]="cellWidth()" style="min-width: 10rem">
+          <span class="p-column-title">{{ column.header }}</span>
+          @if (column.pipe) {
             {{
-              getNestedPropertyValue(item, col.field)
-                | dynamic: col.pipe.name : col.pipe.args || []
+              getNestedPropertyValue(rowData, column.field)
+                | dynamic: column.pipe.name : column.pipe.args || []
             }}
           } @else {
-            {{ getNestedPropertyValue(item, col.field) }}
+            {{ getNestedPropertyValue(rowData, column.field) }}
           }
         </td>
       }
-      <td>
-        <div class="flex">
-          <button
-            pButton
-            pRipple
-            icon="pi pi-pencil"
-            class="p-button-rounded p-button-success mr-2"
-            [routerLink]="[editRoute(), item.id]"
-          ></button>
-          <button
-            pButton
-            pRipple
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-warning"
-            (click)="deleteItem.emit(item)"
-          ></button>
-        </div>
-      </td>
+      @if (rowActions().length > 0) {
+        <td>
+          <div class="flex">
+            @for (action of rowActions(); track action.icon) {
+              <button
+                pButton
+                pRipple
+                [icon]="action.icon"
+                [class]="action.class"
+                (click)="action.action(rowData)"
+              ></button>
+            }
+          </div>
+        </td>
+      }
     </tr>
   </ng-template>
 </p-table>

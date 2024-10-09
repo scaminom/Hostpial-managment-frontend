@@ -3,20 +3,19 @@
     <div class="card px-6 py-6">
       <app-toolbar
         newButtonLabel="New Doctor"
-        [newItemRoute]="['/doctor/new']"
+        [buttons]="toolbarButtons"
       ></app-toolbar>
       <app-table-list
-        [items]="doctors()"
-        [cols]="cols"
-        [globalFilterFields]="globalFilterFields"
-        dataKey="insuranceNumber"
-        tableTitle="Manage Patients"
-        editRoute="/doctor/edit"
-        (deleteItem)="deleteDoctor($event)"
+        [tableData]="doctors()"
+        [tableColumns]="cols"
+        [searchableFields]="globalFilterFields"
+        dataKey="licenseNumber"
+        tableTitle="Manage Doctors"
+        [rowActions]="doctorTableActions"
       ></app-table-list>
       <app-dialog
         [showDialog]="deleteDoctorDialog()"
-        header="Confirm Patient Deletion"
+        header="Confirm Doctor Deletion"
         [itemName]="getDoctorFullName()"
         (cancelDelete)="deleteDoctorDialog.set(false)"
         (confirmDelete)="onConfirmDelete()"

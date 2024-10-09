@@ -15,9 +15,18 @@ export class PatientFacade {
   private patientService = inject(PatientService);
   private messageService = inject(MessageWrapedService);
   private router = inject(Router);
-
   private patientSignal = signal<Patient | null>(null);
   patient = computed(() => this.patientSignal());
+  patients = signal<Patient[]>([]);
+
+  getPatients(): void {
+    this.patientService.getPatients().subscribe({
+      next: (patients) => this.patients.set(patients),
+      error: (error) => {
+        this.messageService.handleError('Error loading patients', error);
+      },
+    });
+  }
 
   getPatient(id: number): Observable<Patient> {
     return this.patientService
@@ -41,6 +50,14 @@ export class PatientFacade {
         this.patientSignal.set(patient);
         this.messageService.showSuccessMessage('Patient updated successfully');
         this.router.navigate(['/patient']);
+      },
+    });
+  }
+
+  deletePatient(id: number): void {
+    this.patientService.deletePatient(id).subscribe({
+      next: () => {
+        this.messageService.showSuccessMessage('Patient deleted successfully');
       },
     });
   }

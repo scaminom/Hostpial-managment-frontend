@@ -1,4 +1,4 @@
-export interface Column {
+export interface TableColumn {
   field: string;
   header: string;
   pipe?: {
