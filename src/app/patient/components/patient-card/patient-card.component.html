@@ -1,0 +1,58 @@
+<div class="card p-4">
+  <div class="flex align-items-center justify-content-between mb-3">
+    <h2 class="text-xl font-bold m-0">
+      {{ fullName() }}
+    </h2>
+    <div class="flex flex-column align-items-end">
+      <p-tag
+        [value]="patient().gender === 'M' ? 'Male' : 'Female'"
+        [severity]="patient().gender === 'M' ? 'info' : 'success'"
+        class="mb-2"
+      ></p-tag>
+      <button
+        pButton
+        pRipple
+        label="Register new visit"
+        icon="pi pi-plus"
+        class="p-button-success"
+        routerLink="/doctor/new"
+      ></button>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-12 md:col-6">
+      <p>
+        <i class="pi pi-calendar mr-2"></i><strong>Date of Birth:</strong>
+        {{ patient().dateOfBirth | date: "mediumDate" }}
+      </p>
+      <p>
+        <i class="pi pi-id-card mr-2"></i><strong>Insurance:</strong>
+        {{ patient().insuranceNumber }}
+      </p>
+      <p>
+        <i class="pi pi-phone mr-2"></i><strong>Phone:</strong>
+        {{ patient().phoneNumber }}
+      </p>
+    </div>
+    <div class="col-12 md:col-6">
+      <p>
+        <i class="pi pi-envelope mr-2"></i><strong>Email:</strong>
+        {{ patient().email }}
+      </p>
+      <p>
+        <i class="pi pi-map-marker mr-2"></i><strong>Address:</strong>
+        {{ patient().address }}
+      </p>
+      <p>
+        <i class="pi pi-heart mr-2"></i><strong>Blood Type:</strong>
+        {{ patient().bloodType }}
+      </p>
+    </div>
+  </div>
+  <div class="mt-3">
+    <h3 class="text-lg font-semibold">Allergies</h3>
+    @for (allergy of patient().allergies.split(","); track allergy.trim()) {
+      <p-chip [label]="allergy.trim()" class="mr-2 mb-2"></p-chip>
+    }
+  </div>
+</div>

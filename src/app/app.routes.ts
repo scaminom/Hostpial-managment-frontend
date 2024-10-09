@@ -26,6 +26,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./doctor/doctor.routes').then((m) => m.DoctorRoutes),
       },
+      {
+        path: 'medical-record',
+        loadChildren: () =>
+          import('./medical-record/medical-record.routes').then(
+            (m) => m.MedicalRecordRoutes,
+          ),
+      },
     ],
     canActivate: [authGuard],
   },

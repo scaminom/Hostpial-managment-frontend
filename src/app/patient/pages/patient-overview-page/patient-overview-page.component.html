@@ -1,0 +1,10 @@
+@if (!isLoading() && patient(); as patient) {
+  <app-patient-card [patient]="patient" />
+  <div class="mt-3">
+    <app-patient-detail-tab [visits]="visits()" />
+  </div>
+} @else if (isLoading()) {
+  <p>Loading patient data...</p>
+} @else {
+  <p>Error loading patient data.</p>
+}

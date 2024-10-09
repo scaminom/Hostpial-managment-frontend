@@ -3,17 +3,17 @@
     <div class="card px-6 py-6">
       <app-toolbar
         newButtonLabel="New Department"
-        [newItemRoute]="['/department/new']"
+        [buttons]="toolbarButtons"
       ></app-toolbar>
       <app-table-list
-        [items]="departments()"
-        [cols]="cols"
-        [tdWidthBody]="'50%'"
-        [globalFilterFields]="globalFilterFields"
+        [tableData]="departments()"
+        [tableColumns]="cols"
+        [cellWidth]="'40%'"
+        [searchableFields]="globalFilterFields"
         dataKey="insuranceNumber"
         tableTitle="Manage Patients"
         editRoute="/department/edit"
-        (deleteItem)="deleteDepartment($event)"
+        [rowActions]="departmentTableActions"
       ></app-table-list>
       <app-dialog
         [showDialog]="deleteDepartmentDialog()"

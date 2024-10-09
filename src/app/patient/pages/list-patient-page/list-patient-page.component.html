@@ -2,17 +2,17 @@
   <div class="col-12">
     <div class="card px-6 py-6">
       <app-toolbar
+        [buttons]="toolbarButtons"
         newButtonLabel="New Patient"
-        [newItemRoute]="['/patient/new']"
       ></app-toolbar>
       <app-table-list
-        [items]="patients()"
-        [cols]="cols"
-        [globalFilterFields]="globalFilterFields"
+        [tableData]="patients()"
+        [tableColumns]="cols"
+        [searchableFields]="globalFilterFields"
         dataKey="insuranceNumber"
         tableTitle="Manage Patients"
         editRoute="/patient/edit"
-        (deleteItem)="deletePatient($event)"
+        [rowActions]="patientTableActions"
       ></app-table-list>
       <app-dialog
         [showDialog]="deletePatientDialog()"

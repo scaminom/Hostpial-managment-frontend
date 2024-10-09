@@ -16,7 +16,6 @@ import { DepartmentFacade } from '@app/department/helpers/department.facade';
   standalone: true,
   imports: [ReactiveFormsModule, ReactiveValidationModule, PrimeNGModule],
   templateUrl: './doctor-form.component.html',
-  styles: ``,
 })
 export class DoctorFormComponent implements OnInit {
   private route = inject(ActivatedRoute);

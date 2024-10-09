@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 
 import { ToastModule } from 'primeng/toast';
 
-import { Column } from '@shared/interfaces/column-table.interface';
+import { TableColumn } from '@shared/interfaces/column-table.interface';
 import { DialogComponent } from '@shared/components/table/dialog/dialog.component';
 import { MessageWrapedService } from '@shared/services/message-wraped.service';
 import { TableListComponent } from '@shared/components/table/table-list/table-list.component';
@@ -10,6 +10,9 @@ import { ToolbarComponent } from '@shared/components/table/toolbar/toolbar.compo
 
 import { Department } from '../../interfaces/department.interface';
 import { DepartmentService } from '../../services/department.service';
+import { Router } from '@angular/router';
+import { TableActionButton } from '@app/shared/interfaces/action-button.interface';
+import { ToolbarButton } from '@app/shared/interfaces/tool-bar-button.interface';
 
 @Component({
   selector: 'app-list-department-page',
@@ -19,13 +22,26 @@ import { DepartmentService } from '../../services/department.service';
 })
 export class ListDepartmentPageComponent {
   deleteDepartmentDialog = signal(false);
-  cols: Column[] = [];
+  cols: TableColumn[] = [];
   globalFilterFields: string[] = ['name', 'floor'];
+
+  toolbarButtons: ToolbarButton[] = [
+    {
+      label: 'New',
+      icon: 'pi pi-plus',
+      route: ['/department/new'],
+      class: 'p-button-success mr-2',
+    },
+  ];
+
   department = signal<Department | null>(null);
   departments = signal<Department[]>([]);
 
+  departmentTableActions: TableActionButton[] = [];
+
   private messageWrapedService = inject(MessageWrapedService);
   private departmentService = inject(DepartmentService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.loadDepartments();
@@ -48,11 +64,28 @@ export class ListDepartmentPageComponent {
       { field: 'name', header: 'Department Name' },
       { field: 'floor', header: 'Department Floor' },
     ];
+
+    this.departmentTableActions = [
+      {
+        icon: 'pi pi-pencil',
+        class: 'p-button-rounded p-button-success mr-2',
+        action: (department: Department) => this.editDepartment(department),
+      },
+      {
+        icon: 'pi pi-trash',
+        class: 'p-button-rounded p-button-danger mr-2',
+        action: (department: Department) => this.deleteDepartment(department),
+      },
+    ];
   }
 
   deleteDepartment(department: Department): void {
     this.department.set(department);
     this.deleteDepartmentDialog.set(true);
+  }
+
+  editDepartment(department: Department): void {
+    this.router.navigate(['/department/edit', department.id]);
   }
 
   getDepartmentFullName(): string {

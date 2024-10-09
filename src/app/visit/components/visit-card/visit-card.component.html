@@ -1,0 +1,42 @@
+<div class="card shadow-2 border-round-xl p-4">
+  <div class="grid">
+    <div class="col-12 md:col-8">
+      <h3 class="text-xl font-bold mt-0 mb-3">Visit Details</h3>
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <p class="mb-2 flex align-items-center">
+            <i class="pi pi-calendar text-primary mr-2"></i>
+            <span class="font-semibold mr-1">Date:</span>
+            <span>{{ visit().createdAt | date: "mediumDate" }}</span>
+          </p>
+          <p class="mb-2 flex align-items-center">
+            <i class="pi pi-tag text-primary mr-2"></i>
+            <span class="font-semibold mr-1">Type:</span>
+            <span>{{ visit().visitType }}</span>
+          </p>
+        </div>
+        <div class="col-12 md:col-6">
+          <p class="mb-2 flex align-items-center">
+            <i class="pi pi-flag text-primary mr-2"></i>
+            <span class="font-semibold mr-1">Priority:</span>
+            <p-tag [severity]="getPrioritySeverity(visit().priorityLevel)">
+              {{ visit().priorityLevel }}
+            </p-tag>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-12 md:col-4 flex align-items-center justify-content-center md:justify-content-end"
+    >
+      <button
+        pButton
+        type="button"
+        label="View"
+        icon="pi pi-eye"
+        class="p-button-secondary mr-2"
+        (click)="onView()"
+      ></button>
+    </div>
+  </div>
+</div>
