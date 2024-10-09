@@ -8,7 +8,6 @@ import { Visit } from '@app/visit/interfaces/visit.interface';
   standalone: true,
   imports: [PrimeNGModule, VisitCardComponent],
   templateUrl: './patient-detail-tab.component.html',
-  styles: ``,
 })
 export class PatientDetailTabComponent {
   visits = input.required<Visit[]>();

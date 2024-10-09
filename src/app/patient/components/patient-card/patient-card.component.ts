@@ -8,7 +8,6 @@ import { ToolbarComponent } from '@app/shared/components/table/toolbar/toolbar.c
   standalone: true,
   imports: [PrimeNGModule, ToolbarComponent],
   templateUrl: './patient-card.component.html',
-  styles: ``,
 })
 export class PatientCardComponent {
   patient = input.required<Patient>();

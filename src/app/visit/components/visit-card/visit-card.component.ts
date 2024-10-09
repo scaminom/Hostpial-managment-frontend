@@ -10,7 +10,6 @@ type Severity = 'success' | 'warning' | 'danger' | 'info';
   standalone: true,
   imports: [PrimeNGModule],
   templateUrl: './visit-card.component.html',
-  styles: ``,
 })
 export class VisitCardComponent {
   visit = input.required<Visit>();

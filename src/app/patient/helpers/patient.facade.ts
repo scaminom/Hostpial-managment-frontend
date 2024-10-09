@@ -22,9 +22,6 @@ export class PatientFacade {
   getPatients(): void {
     this.patientService.getPatients().subscribe({
       next: (patients) => this.patients.set(patients),
-      error: (error) => {
-        this.messageService.handleError('Error loading patients', error);
-      },
     });
   }
 
