@@ -12,7 +12,6 @@ import { forkJoin, switchMap } from 'rxjs';
   standalone: true,
   imports: [PatientCardComponent, PatientDetailTabComponent],
   templateUrl: './patient-overview-page.component.html',
-  styles: ``,
 })
 export class PatientOverviewPageComponent implements OnInit {
   private route = inject(ActivatedRoute);

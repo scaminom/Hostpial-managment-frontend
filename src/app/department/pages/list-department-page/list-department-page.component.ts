@@ -51,11 +51,6 @@ export class ListDepartmentPageComponent {
   private loadDepartments(): void {
     this.departmentService.getDepartments().subscribe({
       next: (departments) => this.departments.set(departments),
-      error: (error) =>
-        this.messageWrapedService.handleError(
-          error,
-          'Failed to load departments',
-        ),
     });
   }
 
@@ -103,15 +98,7 @@ export class ListDepartmentPageComponent {
               currentdepartments.filter((p) => p.id !== departmentToDelete.id),
             );
             this.messageWrapedService.showSuccessMessage('department Deleted');
-          } else {
-            this.messageWrapedService.handleError(
-              null,
-              'Failed to delete department',
-            );
           }
-        },
-        error: (error) => {
-          this.messageWrapedService.handleError(error, error.message);
         },
       });
     }

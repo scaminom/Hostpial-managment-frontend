@@ -36,8 +36,6 @@ export class DepartmentFacade {
         }));
         this.departments.set(departmentItems);
       },
-      error: (error) =>
-        this.messageService.handleError('Error loading departments', error),
     });
   }
 

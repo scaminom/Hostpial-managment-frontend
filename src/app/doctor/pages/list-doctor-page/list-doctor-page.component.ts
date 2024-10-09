@@ -58,8 +58,6 @@ export class ListDoctorPageComponent {
   private loadDoctors(): void {
     this.doctorService.getDoctors().subscribe({
       next: (doctors) => this.doctors.set(doctors),
-      error: (error) =>
-        this.messageWrapedService.handleError(error, 'Failed to load doctors'),
     });
   }
 
@@ -111,15 +109,7 @@ export class ListDoctorPageComponent {
               currentdoctors.filter((p) => p.id !== doctorToDelete.id),
             );
             this.messageWrapedService.showSuccessMessage('doctor Deleted');
-          } else {
-            this.messageWrapedService.handleError(
-              null,
-              'Failed to delete doctor',
-            );
           }
-        },
-        error: (error) => {
-          this.messageWrapedService.handleError(error, error.message);
         },
       });
     }
