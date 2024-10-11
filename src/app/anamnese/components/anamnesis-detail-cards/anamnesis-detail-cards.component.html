@@ -1,0 +1,52 @@
+<div class="grid">
+  <div class="col-12 md:col-6 lg:col-4">
+    <p-card header="Personal Information">
+      <p>
+        <strong>Gender Identity:</strong>
+        {{ anamnesis().genderIdentity }}
+      </p>
+      <p><strong>Age:</strong> {{ anamnesis().age }}</p>
+      <p>
+        <strong>Current Residence:</strong>
+        {{ anamnesis().currentResidence }}
+      </p>
+    </p-card>
+  </div>
+  <div class="col-12 md:col-6 lg:col-4">
+    <p-card header="Social Information">
+      <p>
+        <strong>Education Level:</strong>
+        {{ anamnesis().educationLevel }}
+      </p>
+      <p>
+        <strong>Occupation:</strong>
+        {{ anamnesis().occupation }}
+      </p>
+      <p>
+        <strong>Marital Status:</strong>
+        {{ anamnesis().maritalStatus }}
+      </p>
+      <p>
+        <strong>Religion:</strong>
+        {{ anamnesis().religion }}
+      </p>
+    </p-card>
+  </div>
+  <div class="col-12 md:col-6 lg:col-4">
+    <p-card header="Medical Information">
+      <p>
+        <strong>Handedness:</strong>
+        {{ anamnesis().handedness }}
+      </p>
+      <p>
+        <strong>Family Reference:</strong>
+        {{ anamnesis().familyReference }}
+      </p>
+    </p-card>
+  </div>
+</div>
+<p-button
+  label="Update Anamnesis"
+  icon="pi pi-save"
+  styleClass="p-button-primary mt-3"
+></p-button>

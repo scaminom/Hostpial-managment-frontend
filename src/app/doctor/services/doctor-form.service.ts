@@ -42,10 +42,10 @@ export class DoctorFormService {
 
   patchFormValues(form: FormGroup, doctor: Doctor): void {
     form.patchValue({
-      firstName: doctor.user.firstName,
-      lastName: doctor.user.lastName,
-      email: doctor.user.email,
-      username: doctor.user.username,
+      firstName: doctor?.user?.firstName,
+      lastName: doctor?.user?.lastName,
+      email: doctor?.user?.email,
+      username: doctor?.user?.username,
       speciality: doctor.speciality,
       licenseNumber: doctor.licenseNumber,
       department: {

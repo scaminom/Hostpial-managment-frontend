@@ -6,8 +6,9 @@ export interface Doctor {
   id: number;
   speciality: string;
   licenseNumber: string;
-  department: Department;
-  user: UserRegistrationParams;
+  fullName: string;
+  department?: Department;
+  user?: UserRegistrationParams;
 }
 
 export interface DoctorCreationParams {

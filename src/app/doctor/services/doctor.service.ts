@@ -26,7 +26,7 @@ export class DoctorService {
         return camelcaseKeys(
           { ...response.data.doctor },
           { deep: true },
-        ) as Doctor;
+        ) as unknown as Doctor;
       }),
     );
   }
@@ -37,7 +37,8 @@ export class DoctorService {
     return this.http.get<DoctorsResponse>(url).pipe(
       map((response) => {
         const camelCaseDoctors = response.data.doctors.map(
-          (doctor) => camelcaseKeys({ ...doctor }, { deep: true }) as Doctor,
+          (doctor) =>
+            camelcaseKeys({ ...doctor }, { deep: true }) as unknown as Doctor,
         );
         return camelCaseDoctors;
       }),
@@ -54,7 +55,7 @@ export class DoctorService {
         return camelcaseKeys(
           { ...response.data.doctor },
           { deep: true },
-        ) as Doctor;
+        ) as unknown as Doctor;
       }),
     );
   }
@@ -72,7 +73,7 @@ export class DoctorService {
         return camelcaseKeys(
           { ...response.data.doctor },
           { deep: true },
-        ) as Doctor;
+        ) as unknown as Doctor;
       }),
     );
   }

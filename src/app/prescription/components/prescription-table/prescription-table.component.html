@@ -1,0 +1,40 @@
+<p-table [value]="prescriptions()" [rows]="5">
+  <ng-template pTemplate="header">
+    <tr>
+      <th pSortableColumn="medication">
+        Medication <p-sortIcon field="medication"></p-sortIcon>
+      </th>
+      <th pSortableColumn="dosage">
+        Dosage <p-sortIcon field="dosage"></p-sortIcon>
+      </th>
+      <th>Duration</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-prescription>
+    <tr>
+      <td>{{ prescription.medication }}</td>
+      <td>{{ prescription.dosage }}</td>
+      <td>{{ prescription.duration }}</td>
+      <td>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-text mr-2"
+        ></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger p-button-text"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-button
+  label="Add Prescription"
+  icon="pi pi-plus"
+  styleClass="p-button-success mt-3"
+></p-button>
