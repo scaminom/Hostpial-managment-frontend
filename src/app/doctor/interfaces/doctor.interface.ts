@@ -18,6 +18,13 @@ export interface DoctorCreationParams {
   userAttributes: UserRegistrationParams;
 }
 
+export type DoctorUpdateParams = Partial<
+  Omit<DoctorCreationParams, 'userAttributes'>
+> & {
+  userAttributes?: Partial<UserRegistrationParams>;
+};
+
 export type DoctorResponse = ApiResponse<{ doctor: Doctor }>;
 export type DoctorsResponse = ApiResponse<{ doctors: Doctor[] }>;
 export type DoctorRegistrationParams = { doctor: DoctorCreationParams };
+export type DoctorUpdateRequestParams = { doctor: DoctorUpdateParams };

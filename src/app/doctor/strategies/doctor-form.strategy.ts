@@ -1,13 +1,14 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Validators } from 'angular-reactive-validation';
+import { FormStrategy } from '../../core/strategies/form-strategy.interface';
 import { Doctor, DoctorCreationParams } from '../interfaces/doctor.interface';
+import { Validators } from 'angular-reactive-validation';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DoctorFormService {
-  private fb = inject(FormBuilder);
+export class DoctorFormStrategy implements FormStrategy<Doctor> {
+  constructor(private fb: FormBuilder) {}
 
   createForm(): FormGroup {
     return this.fb.group({
@@ -55,7 +56,7 @@ export class DoctorFormService {
     });
   }
 
-  prepareDoctorData(form: FormGroup): DoctorCreationParams {
+  prepareEntityData(form: FormGroup): DoctorCreationParams {
     const formValue = form.value;
     return {
       speciality: formValue.speciality,
