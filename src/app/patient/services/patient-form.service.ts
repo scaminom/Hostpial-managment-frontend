@@ -64,6 +64,7 @@ export class PatientFormService {
       ],
       bloodType: ['', Validators.required('Blood type is required')],
       allergies: ['', Validators.required('Allergies are required')],
+      birthPlace: [''],
     });
   }
 

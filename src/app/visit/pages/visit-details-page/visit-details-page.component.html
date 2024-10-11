@@ -1,2 +1,7 @@
-<p>visit-details-page works!</p>
-<h1>SEXOOO</h1>
+@if (!isLoading() && visit; as visit) {
+  <app-visit-top-header [visit]="visit" />
+} @else if (isLoading()) {
+  <p>Loading visit data...</p>
+} @else {
+  <p>Error loading visit data.</p>
+}

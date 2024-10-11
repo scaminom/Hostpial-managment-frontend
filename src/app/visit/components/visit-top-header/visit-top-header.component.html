@@ -1,0 +1,193 @@
+<div class="card">
+  <div
+    class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+  >
+    <h2 class="text-2xl font-bold mb-2 md:mb-0">
+      Visit Details - {{ visit().patientName }}
+    </h2>
+    <p class="text-lg">
+      Visit Date: {{ visit().createdAt | date: "longDate" }}
+    </p>
+  </div>
+
+  <div class="grid mt-3">
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card header="Visit Type" [style]="{ height: '100%' }">
+        <p class="m-0">{{ visit().visitType }}</p>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card header="Priority Level" [style]="{ height: '100%' }">
+        <p class="m-0">{{ visit().priorityLevel }}</p>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card header="Room" [style]="{ height: '100%' }">
+        <p class="m-0">{{ visit().room || "Not assigned" }}</p>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+      <p-card header="Attending Doctor" [style]="{ height: '100%' }">
+        <p class="m-0">{{ visit().doctor.fullName }}</p>
+      </p-card>
+    </div>
+  </div>
+
+  <p-tabView class="mt-4">
+    <p-tabPanel header="Overview">
+      <p>{{ visit().overview || "No information" }}</p>
+    </p-tabPanel>
+
+    <p-tabPanel header="Lab Tests">
+      <p-table [value]="visit().laboratoryResults" [rows]="5">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Test Type</th>
+            <th pSortableColumn="name">
+              Test Name <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th>Status</th>
+            <th>Results</th>
+            <th pSortableColumn="performedAt">
+              Performed at <p-sortIcon field="performedAt"></p-sortIcon>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-test>
+          <tr>
+            <td>{{ test.labType }}</td>
+            <td>{{ test.name }}</td>
+            <td>
+              <p-tag
+                [severity]="getStatusTest(test.status)"
+                [value]="test.status"
+              ></p-tag>
+            </td>
+            <td>{{ test?.results || "The test is not completed" }}</td>
+            <td>{{ test.performedAt | date: "medium" }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text mr-2"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-text"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-button
+        label="Add Lab Test"
+        icon="pi pi-plus"
+        styleClass="p-button-success mt-3"
+      ></p-button>
+    </p-tabPanel>
+
+    <p-tabPanel header="Prescriptions">
+      <p-table [value]="visit().prescriptions" [rows]="5">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="medication">
+              Medication <p-sortIcon field="medication"></p-sortIcon>
+            </th>
+            <th pSortableColumn="dosage">
+              Dosage <p-sortIcon field="dosage"></p-sortIcon>
+            </th>
+            <th>Duration</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-prescription>
+          <tr>
+            <td>{{ prescription.medication }}</td>
+            <td>{{ prescription.dosage }}</td>
+            <td>{{ prescription.duration }}</td>
+            <td>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text mr-2"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-text"
+              ></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-button
+        label="Add Prescription"
+        icon="pi pi-plus"
+        styleClass="p-button-success mt-3"
+      ></p-button>
+    </p-tabPanel>
+
+    <p-tabPanel header="Anamnesis">
+      <div class="grid">
+        <div class="col-12 md:col-6 lg:col-4">
+          <p-card header="Personal Information">
+            <p>
+              <strong>Gender Identity:</strong>
+              {{ visit().medicalRecord.anamnesis.genderIdentity }}
+            </p>
+            <p>
+              <strong>Age:</strong> {{ visit().medicalRecord.anamnesis.age }}
+            </p>
+            <p>
+              <strong>Current Residence:</strong>
+              {{ visit().medicalRecord.anamnesis.currentResidence }}
+            </p>
+          </p-card>
+        </div>
+        <div class="col-12 md:col-6 lg:col-4">
+          <p-card header="Social Information">
+            <p>
+              <strong>Education Level:</strong>
+              {{ visit().medicalRecord.anamnesis.educationLevel }}
+            </p>
+            <p>
+              <strong>Occupation:</strong>
+              {{ visit().medicalRecord.anamnesis.occupation }}
+            </p>
+            <p>
+              <strong>Marital Status:</strong>
+              {{ visit().medicalRecord.anamnesis.maritalStatus }}
+            </p>
+            <p>
+              <strong>Religion:</strong>
+              {{ visit().medicalRecord.anamnesis.religion }}
+            </p>
+          </p-card>
+        </div>
+        <div class="col-12 md:col-6 lg:col-4">
+          <p-card header="Medical Information">
+            <p>
+              <strong>Handedness:</strong>
+              {{ visit().medicalRecord.anamnesis.handedness }}
+            </p>
+            <p>
+              <strong>Family Reference:</strong>
+              {{ visit().medicalRecord.anamnesis.familyReference }}
+            </p>
+          </p-card>
+        </div>
+      </div>
+      <p-button
+        label="Update Anamnesis"
+        icon="pi pi-save"
+        styleClass="p-button-primary mt-3"
+      ></p-button>
+    </p-tabPanel>
+  </p-tabView>
+</div>

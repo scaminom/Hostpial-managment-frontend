@@ -96,7 +96,7 @@ export class ListDoctorPageComponent {
 
   getDoctorFullName(): string {
     const doctor = this.doctor();
-    return doctor ? `${doctor.user.firstName} ${doctor.user.lastName}` : '';
+    return doctor ? doctor.fullName : '';
   }
 
   onConfirmDelete(): void {
