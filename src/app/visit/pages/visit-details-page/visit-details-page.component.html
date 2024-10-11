@@ -1,7 +1,63 @@
-@if (!isLoading() && visit; as visit) {
-  <app-visit-top-header [visit]="visit" />
-} @else if (isLoading()) {
-  <p>Loading visit data...</p>
+@if (visit(); as visit) {
+  <div class="card">
+    <div
+      class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+    >
+      <h2 class="text-2xl font-bold mb-2 md:mb-0">
+        Visit Details - {{ visit.patientName }}
+      </h2>
+      <p class="text-lg">
+        Visit Date: {{ visit.createdAt | date: "longDate" }}
+      </p>
+    </div>
+
+    <div class="grid mt-3">
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card header="Visit Type" [style]="{ height: '100%' }">
+          <p class="m-0">{{ visit.visitType }}</p>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card header="Priority Level" [style]="{ height: '100%' }">
+          <p class="m-0">{{ visit.priorityLevel }}</p>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card header="Room" [style]="{ height: '100%' }">
+          <p class="m-0">{{ visit.room || "Not assigned" }}</p>
+        </p-card>
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <p-card header="Attending Doctor" [style]="{ height: '100%' }">
+          <p class="m-0">{{ visit.doctor.fullName }}</p>
+        </p-card>
+      </div>
+    </div>
+
+    <p-tabView class="mt-4">
+      <p-tabPanel header="Overview">
+        <p>{{ visit.overview || "No information" }}</p>
+      </p-tabPanel>
+
+      <p-tabPanel header="Lab Tests">
+        <lab-test-table
+          [laboratoryResults]="visit.laboratoryResults"
+        ></lab-test-table>
+      </p-tabPanel>
+
+      <p-tabPanel header="Prescriptions">
+        <prescription-table
+          [prescriptions]="visit.prescriptions"
+        ></prescription-table>
+      </p-tabPanel>
+
+      <p-tabPanel header="Anamnesis">
+        <anamnesis-detail-cards
+          [anamnesis]="visit.medicalRecord.anamnesis"
+        ></anamnesis-detail-cards>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
 } @else {
   <p>Error loading visit data.</p>
 }

@@ -1,24 +1,17 @@
 import { Component, input } from '@angular/core';
+import { LaboratoryResults } from '@app/laboratory-test/interfaces/laboratory-test.interface';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
-import { Visit } from '@app/visit/interfaces/visit.interface';
-
-type Severity = 'success' | 'warning' | 'danger' | 'info';
+import { Severity } from '@app/shared/types/severity.type';
 
 @Component({
-  selector: 'app-visit-top-header',
+  selector: 'lab-test-table',
   standalone: true,
   imports: [PrimeNGModule],
-  templateUrl: './visit-top-header.component.html',
-  styles: [
-    `
-      :host ::ng-deep .p-tabview-panels {
-        padding: 1rem;
-      }
-    `,
-  ],
+  templateUrl: './lababoratory-test-table.component.html',
+  styles: ``,
 })
-export class VisitTopHeaderComponent {
-  visit = input.required<Visit>();
+export class LababoratoryTestTableComponent {
+  laboratoryResults = input.required<LaboratoryResults[]>();
 
   getStatusTest(priority: string): Severity {
     switch (priority) {
