@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PatientCardComponent } from '@app/patient/components/patient-card/patient-card.component';
 import { PatientDetailTabComponent } from '@app/patient/components/patient-detail-tab/patient-detail-tab.component';
 import { PatientFacade } from '@app/patient/helpers/patient.facade';
+import { Patient } from '@app/patient/interfaces/patient.interface';
 import { Visit } from '@app/visit/interfaces/visit.interface';
 import { VisitService } from '@app/visit/services/visit.service';
 import { forkJoin, switchMap } from 'rxjs';
@@ -19,7 +20,7 @@ export class PatientOverviewPageComponent implements OnInit {
   private visitService = inject(VisitService);
 
   isLoading = signal(true);
-  patient = this.patientFacade.patient;
+  patient = signal<Patient | null>(null);
   visits = signal<Visit[]>([]);
 
   ngOnInit(): void {
@@ -29,13 +30,14 @@ export class PatientOverviewPageComponent implements OnInit {
           const id = +params['patientId'];
 
           return forkJoin({
-            patient: this.patientFacade.getPatient(id),
+            patient: this.patientFacade.getEntity(id),
             visits: this.visitService.getVisitsByPatientId(id),
           });
         }),
       )
       .subscribe({
-        next: ({ visits }) => {
+        next: ({ visits, patient }) => {
+          this.patient.set(patient);
           this.visits.set(visits);
           this.isLoading.set(false);
         },

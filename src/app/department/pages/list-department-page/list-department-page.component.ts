@@ -9,10 +9,10 @@ import { TableListComponent } from '@shared/components/table/table-list/table-li
 import { ToolbarComponent } from '@shared/components/table/toolbar/toolbar.component';
 
 import { Department } from '../../interfaces/department.interface';
-import { DepartmentService } from '../../services/department.service';
 import { Router } from '@angular/router';
 import { TableActionButton } from '@app/shared/interfaces/action-button.interface';
 import { ToolbarButton } from '@app/shared/interfaces/tool-bar-button.interface';
+import { DepartmentService } from '@app/department/services/department.service';
 
 @Component({
   selector: 'app-list-department-page',
@@ -49,7 +49,7 @@ export class ListDepartmentPageComponent {
   }
 
   private loadDepartments(): void {
-    this.departmentService.getDepartments().subscribe({
+    this.departmentService.getAll().subscribe({
       next: (departments) => this.departments.set(departments),
     });
   }
@@ -91,7 +91,7 @@ export class ListDepartmentPageComponent {
   onConfirmDelete(): void {
     const departmentToDelete = this.department();
     if (departmentToDelete && departmentToDelete.id) {
-      this.departmentService.deleteDepartment(departmentToDelete.id).subscribe({
+      this.departmentService.delete(departmentToDelete.id).subscribe({
         next: (success) => {
           if (success) {
             this.departments.update((currentdepartments) =>

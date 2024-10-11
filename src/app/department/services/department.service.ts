@@ -8,16 +8,20 @@ import {
   DepartmentReponse,
   DepartmentsReponse,
 } from '../interfaces/department.interface';
+import { IHttpService } from '@app/core/interfaces/http-service.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DepartmentService {
+export class DepartmentService
+  implements
+    IHttpService<Department, DepartmentParams, Partial<DepartmentParams>>
+{
   private http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl;
+  private readonly baseUrl = `${environment.apiUrl}/api/v1/departments`;
 
-  getDepartmentById(id: number): Observable<Department> {
-    const url = `${this.baseUrl}/api/v1/departments/${id}`;
+  getById(id: number): Observable<Department> {
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.get<DepartmentReponse>(url).pipe(
       map((response) => {
@@ -26,32 +30,29 @@ export class DepartmentService {
     );
   }
 
-  getDepartments(): Observable<Department[]> {
-    const url = `${this.baseUrl}/api/v1/departments`;
-
-    return this.http.get<DepartmentsReponse>(url).pipe(
+  getAll(): Observable<Department[]> {
+    return this.http.get<DepartmentsReponse>(this.baseUrl).pipe(
       map((response) => {
         return response.data.departments;
       }),
     );
   }
 
-  createDepartment(departmentParams: DepartmentParams): Observable<Department> {
-    const url = `${this.baseUrl}/api/v1/departments`;
+  create(departmentParams: DepartmentParams): Observable<Department> {
     const body = { department: { ...departmentParams.department } };
 
-    return this.http.post<DepartmentReponse>(url, body).pipe(
+    return this.http.post<DepartmentReponse>(this.baseUrl, body).pipe(
       map((response) => {
         return response.data.department;
       }),
     );
   }
 
-  updateDepartment(
+  update(
     id: number,
     departmentParams: DepartmentParams,
   ): Observable<Department> {
-    const url = `${this.baseUrl}/api/v1/departments/${id}`;
+    const url = `${this.baseUrl}/${id}`;
     const body = { department: { ...departmentParams.department } };
 
     return this.http.put<DepartmentReponse>(url, body).pipe(
@@ -61,8 +62,8 @@ export class DepartmentService {
     );
   }
 
-  deleteDepartment(id: number): Observable<boolean> {
-    const url = `${this.baseUrl}/api/v1/departments/${id}`;
+  delete(id: number): Observable<boolean> {
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.delete<DepartmentReponse>(url).pipe(
       map(() => {

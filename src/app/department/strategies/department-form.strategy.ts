@@ -1,13 +1,17 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validators } from 'angular-reactive-validation';
-import { DepartmentCreationParams } from '../interfaces/department.interface';
+import {
+  Department,
+  DepartmentCreationParams,
+} from '../interfaces/department.interface';
 import { DropdownItem } from '@shared/interfaces/drop-down-item.interface';
+import { FormStrategy } from '@app/core/strategies/form-strategy.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DepartmentFormService {
+export class DepartmentFormStrategy implements FormStrategy<Department> {
   private fb = inject(FormBuilder);
 
   floorItems = signal<DropdownItem[]>([
@@ -31,7 +35,7 @@ export class DepartmentFormService {
     });
   }
 
-  prepareDepartmentData(form: FormGroup): DepartmentCreationParams {
+  prepareEntityData(form: FormGroup): DepartmentCreationParams {
     const formValue = form.value;
     return {
       ...formValue,

@@ -8,11 +8,12 @@ import {
   Patient,
   PatientCreationParams,
 } from '../interfaces/patient.interface';
+import { FormStrategy } from '@app/core/strategies/form-strategy.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PatientFormService {
+export class PatientFormStrategy implements FormStrategy<Patient> {
   private fb = inject(FormBuilder);
 
   genderItems = signal<DropdownItem[]>([
@@ -79,7 +80,7 @@ export class PatientFormService {
     });
   }
 
-  preparePatientData(form: FormGroup): PatientCreationParams {
+  prepareEntityData(form: FormGroup): PatientCreationParams {
     const formValue = form.value;
     return {
       ...formValue,

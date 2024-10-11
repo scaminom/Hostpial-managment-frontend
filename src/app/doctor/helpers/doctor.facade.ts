@@ -1,14 +1,12 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DoctorService } from '../services/doctor.service';
 import { MessageWrapedService } from '@app/shared/services/message-wraped.service';
 import {
   Doctor,
-  DoctorCreationParams,
   DoctorRegistrationParams,
-  DoctorUpdateParams,
   DoctorUpdateRequestParams,
 } from '../interfaces/doctor.interface';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { IFacade } from '@app/core/interfaces/facade.interface';
 

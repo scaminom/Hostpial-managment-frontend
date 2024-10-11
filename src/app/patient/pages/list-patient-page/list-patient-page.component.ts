@@ -39,7 +39,7 @@ export class ListPatientPageComponent implements OnInit {
     },
   ];
   patient = signal<Patient | null>(null);
-  patients = this.patientFacade.patients;
+  patients = signal<Patient[]>([]);
   patientTableActions: TableActionButton[] = [];
 
   ngOnInit(): void {
@@ -49,7 +49,9 @@ export class ListPatientPageComponent implements OnInit {
   }
 
   private loadPatients(): void {
-    this.patientFacade.getPatients();
+    this.patientFacade
+      .getAllEntities()
+      .subscribe((patients) => this.patients.set(patients));
   }
 
   private initializeTableColumns(): void {
@@ -103,7 +105,7 @@ export class ListPatientPageComponent implements OnInit {
   onConfirmDelete(): void {
     const patientToDelete = this.patient();
     if (patientToDelete && patientToDelete.id) {
-      this.patientFacade.deletePatient(patientToDelete.id);
+      this.patientFacade.deleteEntity(patientToDelete.id);
     }
     this.deletePatientDialog.set(false);
     this.patient.set(null);

@@ -36,6 +36,6 @@ export class DoctorFormComponent extends TemplateFormComponent<
   }
 
   private loadDepartments(): void {
-    this.departmentFacade.loadDepartments();
+    this.departmentFacade.getAllEntities().subscribe();
   }
 }
