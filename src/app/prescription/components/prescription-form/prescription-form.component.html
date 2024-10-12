@@ -1,0 +1,49 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="this.entityForm" (ngSubmit)="onSubmit()">
+      <h5>Lab Test</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="medication">Medication</label>
+          <input
+            pInputText
+            id="medication"
+            type="text"
+            formControlName="medication"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="medication"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="dosage">Dosage</label>
+          <input pInputText id="dosage" type="text" formControlName="dosage" />
+          <small class="p-error">
+            <arv-validation-messages for="dosage"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="duration">Duration</label>
+          <input
+            pInputText
+            id="duration"
+            type="text"
+            formControlName="duration"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="duration"></arv-validation-messages>
+          </small>
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="w-full p-2 text-xl"
+        [disabled]="!this.entityForm.valid"
+      ></button>
+    </form>
+  </div>
+</div>
