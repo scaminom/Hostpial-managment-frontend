@@ -57,7 +57,10 @@ export class ListDepartmentPageComponent {
   private initializeColumns(): void {
     this.cols = [
       { field: 'name', header: 'Department Name' },
-      { field: 'floor', header: 'Department Floor' },
+      {
+        field: 'floor',
+        header: 'Department Floor',
+      },
     ];
 
     this.departmentTableActions = [

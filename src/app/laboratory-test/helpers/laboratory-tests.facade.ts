@@ -8,7 +8,6 @@ import {
   LaboratoryResults,
 } from '../interfaces/laboratory-test.interface';
 import { LaboratoryResultsService } from '../services/laboratory-results.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +22,6 @@ export class LaboratoryTestsFacade
 {
   private labTestsService = inject(LaboratoryResultsService);
   private messageService = inject(MessageWrapedService);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
 
   labTest = signal<LaboratoryResults | null>(null);
   private labTestsSignal = signal<LaboratoryResults[]>([]);
@@ -55,7 +52,6 @@ export class LaboratoryTestsFacade
         this.messageService.showSuccessMessage(
           'Laboratory test created successfully',
         );
-        this.navigateBack();
       }),
     );
   }
@@ -87,18 +83,5 @@ export class LaboratoryTestsFacade
         );
       }),
     );
-  }
-
-  private navigateBack(): void {
-    const patientId = this.route.snapshot.paramMap.get('patientId');
-    const visitId = this.route.snapshot.paramMap.get('visitId');
-    if (patientId && visitId) {
-      this.router.navigate(['/patient', patientId, 'visit', visitId], {
-        queryParams: { activeTab: 'lab-tests' },
-        queryParamsHandling: 'merge',
-      });
-    } else {
-      console.error('Patient ID or Visit ID not found in the current route');
-    }
   }
 }

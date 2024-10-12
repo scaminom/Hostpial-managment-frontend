@@ -24,7 +24,7 @@ export class LaboratoryResultsFormStrategy
     return this.fb.group({
       labType: ['', Validators.required('Test type is required')],
       name: ['', Validators.required('Name test is required')],
-      status: [''],
+      status: [null],
       results: [''],
     });
   }
@@ -42,7 +42,7 @@ export class LaboratoryResultsFormStrategy
     const formValue = form.value;
     return {
       ...formValue,
-      status: formValue.status.code,
+      status: formValue.status?.code,
     };
   }
 }

@@ -8,6 +8,8 @@ import { VisitDetailsPageComponent } from '@app/visit/pages/visit-details-page/v
 import { CreateVisitPageComponent } from '@app/visit/pages/create-visit-page/create-visit-page.component';
 import { PatientOverviewLayoutComponent } from './layouts/patient-overview-layout/patient-overview-layout.component';
 import { LababoratoryFormComponent } from '@app/laboratory-test/components/lababoratory-form/lababoratory-form.component';
+import { PatientFormComponent } from './components/patient-form/patient-form.component';
+import { PrescriptionFormComponent } from '@app/prescription/components/prescription-form/prescription-form.component';
 
 export const PatientRoutes: Routes = [
   {
@@ -33,6 +35,14 @@ export const PatientRoutes: Routes = [
           {
             path: 'visit/:visitId/lab-test/edit/:labTestId',
             component: LababoratoryFormComponent,
+          },
+          {
+            path: 'visit/:visitId/prescription/new',
+            component: PrescriptionFormComponent,
+          },
+          {
+            path: 'visit/:visitId/prescription/edit/:prescriptionId',
+            component: PrescriptionFormComponent,
           },
         ],
       },

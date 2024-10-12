@@ -22,12 +22,14 @@
           pRipple
           icon="pi pi-pencil"
           class="p-button-rounded p-button-text mr-2"
+          (click)="editPrescription(prescription.id)"
         ></button>
         <button
           pButton
           pRipple
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger p-button-text"
+          (click)="confirmDeletePrescription(prescription)"
         ></button>
       </td>
     </tr>
@@ -37,4 +39,13 @@
   label="Add Prescription"
   icon="pi pi-plus"
   styleClass="p-button-success mt-3"
+  (click)="navigateToNewPrescription()"
 ></p-button>
+
+<app-dialog
+  [showDialog]="deletePrescriptionDialog()"
+  header="Confirm Laboratory Test Deletion"
+  [itemName]="getPrescriptionName"
+  (cancelDelete)="deletePrescriptionDialog.set(false)"
+  (confirmDelete)="deletePrescription()"
+></app-dialog>

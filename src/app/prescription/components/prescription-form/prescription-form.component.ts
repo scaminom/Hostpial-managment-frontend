@@ -1,36 +1,33 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TemplateFormComponent } from '@app/core/components/template-form.component';
-import { LaboratoryTestsFacade } from '@app/laboratory-test/helpers/laboratory-tests.facade';
+import { PrescriptionFacade } from '@app/prescription/helpers/prescription.facade';
 import {
-  LabResultsRegistrationParams,
-  LabResultsUpdateRequestParams,
-  LaboratoryResults,
-} from '@app/laboratory-test/interfaces/laboratory-test.interface';
-import { LaboratoryResultsFormStrategy } from '@app/laboratory-test/strategies/laboratory-results-form.strategy';
+  Prescription,
+  PrescriptionRegistrationParams,
+  PrescriptionUpdateRequestParams,
+} from '@app/prescription/interfaces/prescription.interface';
+import { PrescriptionFormStrategy } from '@app/prescription/strategies/prescription-form.strategy';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { ReactiveValidationModule } from 'angular-reactive-validation';
 
 @Component({
-  selector: 'app-lababoratory-form',
+  selector: 'app-prescription-form',
   standalone: true,
   imports: [ReactiveFormsModule, ReactiveValidationModule, PrimeNGModule],
-  templateUrl: './lababoratory-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './prescription-form.component.html',
 })
-export class LababoratoryFormComponent extends TemplateFormComponent<
-  LaboratoryResults,
-  LabResultsRegistrationParams,
-  LabResultsUpdateRequestParams
+export class PrescriptionFormComponent extends TemplateFormComponent<
+  Prescription,
+  PrescriptionRegistrationParams,
+  PrescriptionUpdateRequestParams
 > {
-  protected override entityFacade = inject(LaboratoryTestsFacade);
-  protected override formStrategy = inject(LaboratoryResultsFormStrategy);
-
-  statusItems = this.formStrategy.statusItems;
+  protected override entityFacade = inject(PrescriptionFacade);
+  protected override formStrategy = inject(PrescriptionFormStrategy);
 
   protected override createEntity(
-    entityData: LabResultsRegistrationParams,
+    entityData: PrescriptionRegistrationParams,
   ): void {
     const visitId = this.route.snapshot.paramMap.get('visitId');
 
@@ -46,7 +43,7 @@ export class LababoratoryFormComponent extends TemplateFormComponent<
   }
 
   protected override updateEntity(
-    entityData: LabResultsUpdateRequestParams,
+    entityData: PrescriptionUpdateRequestParams,
   ): void {
     if (this.entityId) {
       this.entityFacade
@@ -59,12 +56,12 @@ export class LababoratoryFormComponent extends TemplateFormComponent<
   protected override checkEditMode(): void {
     this.isEditMode = this.router.url.includes('edit');
     if (this.isEditMode) {
-      const labTestId = this.route.snapshot.paramMap.get('labTestId');
-      if (labTestId) {
-        this.entityId = +labTestId;
-        this.retrieveEntity(+labTestId);
+      const prescriptionId = this.route.snapshot.paramMap.get('prescriptionId');
+      if (prescriptionId) {
+        this.entityId = +prescriptionId;
+        this.retrieveEntity(+prescriptionId);
       } else {
-        console.error('Lab Test ID not found in the current route');
+        console.error('Prescription ID not found in the current route');
       }
     }
   }
@@ -74,15 +71,11 @@ export class LababoratoryFormComponent extends TemplateFormComponent<
     const visitId = this.route.snapshot.paramMap.get('visitId');
     if (patientId && visitId) {
       this.router.navigate(['/patient', patientId, 'visit', visitId], {
-        queryParams: { activeTab: 'lab-tests' },
+        queryParams: { activeTab: 'prescriptions' },
         queryParamsHandling: 'merge',
       });
     } else {
       console.error('Patient ID or Visit ID not found in the current route');
     }
-  }
-
-  protected canEditStatusAndResults(): boolean {
-    return this.isEditMode === true;
   }
 }
