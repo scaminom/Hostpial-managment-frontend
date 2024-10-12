@@ -10,16 +10,19 @@ import {
 } from '../interfaces/patient.interface';
 import camelcaseKeys from 'camelcase-keys';
 import { environment } from '../../../environments/environment';
+import { IHttpService } from '@app/core/interfaces/http-service.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PatientService {
+export class PatientService
+  implements IHttpService<Patient, PatientParams, Partial<PatientParams>>
+{
   private http = inject(HttpClient);
-  private readonly baseUrl = environment.apiUrl;
+  private readonly baseUrl = `${environment.apiUrl}/api/v1/patients`;
 
-  getPatientById(id: number): Observable<Patient> {
-    const url = `${this.baseUrl}/api/v1/patients/${id}`;
+  getById(id: number): Observable<Patient> {
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.get<PatientReponse>(url).pipe(
       map((response) => {
@@ -28,10 +31,8 @@ export class PatientService {
     );
   }
 
-  getPatients(): Observable<Patient[]> {
-    const url = `${this.baseUrl}/api/v1/patients`;
-
-    return this.http.get<PatientsReponse>(url).pipe(
+  getAll(): Observable<Patient[]> {
+    return this.http.get<PatientsReponse>(this.baseUrl).pipe(
       map((response) => {
         const camelCasePatients = response.data.patients.map(
           (patient) => camelcaseKeys({ ...patient }) as Patient,
@@ -41,8 +42,8 @@ export class PatientService {
     );
   }
 
-  createPatient(patientParams: PatientParams): Observable<Patient> {
-    const url = `${this.baseUrl}/api/v1/patients`;
+  create(patientParams: PatientParams): Observable<Patient> {
+    const url = this.baseUrl;
     const body = snakecaseKeys({
       patient: { ...patientParams.patient },
     });
@@ -54,8 +55,8 @@ export class PatientService {
     );
   }
 
-  updatePatient(id: number, patientParams: PatientParams): Observable<Patient> {
-    const url = `${this.baseUrl}/api/v1/patients/${id}`;
+  update(id: number, patientParams: PatientParams): Observable<Patient> {
+    const url = `${this.baseUrl}/${id}`;
     const body = snakecaseKeys({
       patient: { ...patientParams.patient },
     });
@@ -67,8 +68,8 @@ export class PatientService {
     );
   }
 
-  deletePatient(id: number): Observable<boolean> {
-    const url = `${this.baseUrl}/api/v1/patients/${id}`;
+  delete(id: number): Observable<boolean> {
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.delete<PatientReponse>(url).pipe(
       map(() => {

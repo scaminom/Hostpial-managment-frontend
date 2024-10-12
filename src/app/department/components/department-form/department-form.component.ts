@@ -4,13 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ReactiveValidationModule } from 'angular-reactive-validation';
 
-import { DropdownItem } from '@shared/interfaces/drop-down-item.interface';
-
-import { DepartmentCreationParams } from '../../interfaces/department.interface';
+import {
+  Department,
+  DepartmentCreationParams,
+} from '../../interfaces/department.interface';
 
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { DepartmentFacade } from '@app/department/helpers/department.facade';
-import { DepartmentFormService } from '@app/department/services/department-form.service';
+import { TemplateFormComponent } from '@app/core/components/template-form.component';
+import { DepartmentFormStrategy } from '@app/department/strategies/department-form.strategy';
 
 @Component({
   selector: 'app-department-form',
@@ -18,62 +20,13 @@ import { DepartmentFormService } from '@app/department/services/department-form.
   imports: [ReactiveFormsModule, ReactiveValidationModule, PrimeNGModule],
   templateUrl: './department-form.component.html',
 })
-export class DepartmentFormComponent implements OnInit {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private departmentFacade = inject(DepartmentFacade);
-  private departmentFormService = inject(DepartmentFormService);
+export class DepartmentFormComponent extends TemplateFormComponent<
+  Department,
+  DepartmentCreationParams,
+  Partial<DepartmentCreationParams>
+> {
+  protected override entityFacade = inject(DepartmentFacade);
+  protected override formStrategy = inject(DepartmentFormStrategy);
 
-  departmentForm!: FormGroup;
-  isEditMode = false;
-  departmentId: number | null = null;
-
-  floorItems = this.departmentFormService.floorItems;
-
-  ngOnInit(): void {
-    this.initForm();
-    this.checkEditMode();
-  }
-
-  private initForm(): void {
-    this.departmentForm = this.departmentFormService.createForm();
-  }
-
-  private checkEditMode(): void {
-    this.isEditMode = this.router.url.includes('edit');
-    if (this.isEditMode) {
-      this.route.params.subscribe((params) => {
-        this.departmentId = +params['id'];
-        this.retrieveDepartment(this.departmentId);
-      });
-    }
-  }
-
-  onSubmit(): void {
-    if (this.departmentForm.valid) {
-      const departmentData: DepartmentCreationParams =
-        this.departmentFormService.prepareDepartmentData(this.departmentForm);
-      this.isEditMode
-        ? this.updateDepartment(departmentData)
-        : this.createDepartment(departmentData);
-    }
-  }
-
-  private createDepartment(departmentData: DepartmentCreationParams): void {
-    this.departmentFacade.createDepartment(departmentData);
-  }
-
-  private updateDepartment(departmentData: DepartmentCreationParams): void {
-    if (this.departmentId) {
-      this.departmentFacade.updateDepartment(this.departmentId, departmentData);
-    }
-  }
-
-  private retrieveDepartment(id: number): void {
-    this.departmentFacade.getDepartment(id).subscribe({
-      next: (doctor) =>
-        this.departmentFormService.patchFormValues(this.departmentForm, doctor),
-      error: () => this.router.navigate(['/department']),
-    });
-  }
+  floorItems = this.formStrategy.floorItems;
 }

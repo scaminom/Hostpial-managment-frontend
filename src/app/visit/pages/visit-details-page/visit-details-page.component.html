@@ -34,27 +34,37 @@
       </div>
     </div>
 
-    <p-tabView class="mt-4">
+    <p-tabView
+      class="mt-4"
+      [(activeIndex)]="activeTabIndex"
+      (activeIndexChange)="onTabChange($event)"
+    >
       <p-tabPanel header="Overview">
-        <p>{{ visit.overview || "No information" }}</p>
+        <ng-template pTemplate="content">
+          <p>{{ visit.overview || "No information" }}</p>
+        </ng-template>
       </p-tabPanel>
 
       <p-tabPanel header="Lab Tests">
-        <lab-test-table
-          [laboratoryResults]="visit.laboratoryResults"
-        ></lab-test-table>
+        <ng-template pTemplate="content">
+          <lab-test-table></lab-test-table>
+        </ng-template>
       </p-tabPanel>
 
       <p-tabPanel header="Prescriptions">
-        <prescription-table
-          [prescriptions]="visit.prescriptions"
-        ></prescription-table>
+        <ng-template pTemplate="content">
+          <prescription-table
+            [prescriptions]="visit.prescriptions"
+          ></prescription-table>
+        </ng-template>
       </p-tabPanel>
 
       <p-tabPanel header="Anamnesis">
-        <anamnesis-detail-cards
-          [anamnesis]="visit.medicalRecord.anamnesis"
-        ></anamnesis-detail-cards>
+        <ng-template pTemplate="content">
+          <anamnesis-detail-cards
+            [anamnesis]="visit.medicalRecord.anamnesis"
+          ></anamnesis-detail-cards>
+        </ng-template>
       </p-tabPanel>
     </p-tabView>
   </div>

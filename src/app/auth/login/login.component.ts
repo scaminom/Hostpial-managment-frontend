@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,6 +15,7 @@ import { AuthService } from '../auth.service';
 import { LayoutService } from '../../layout/services/app.layout.service';
 import { MessageWrapedService } from '@app/shared/services/message-wraped.service';
 import { Validators } from 'angular-reactive-validation';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
     this.initForm();
@@ -53,12 +55,15 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     if (!this.loginForm.valid) return;
-    this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
-        this.messageService.showSuccessMessage('Logged in successfully');
-        this.router.navigate(['/']);
-      },
-    });
+    this.authService
+      .login(this.loginForm.value)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.messageService.showSuccessMessage('Logged in successfully');
+          this.router.navigate(['/']);
+        },
+      });
   }
 
   initForm(): void {

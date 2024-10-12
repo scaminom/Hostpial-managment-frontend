@@ -7,6 +7,7 @@ import { PatientOverviewPageComponent } from './pages/patient-overview-page/pati
 import { VisitDetailsPageComponent } from '@app/visit/pages/visit-details-page/visit-details-page.component';
 import { CreateVisitPageComponent } from '@app/visit/pages/create-visit-page/create-visit-page.component';
 import { PatientOverviewLayoutComponent } from './layouts/patient-overview-layout/patient-overview-layout.component';
+import { LababoratoryFormComponent } from '@app/laboratory-test/components/lababoratory-form/lababoratory-form.component';
 
 export const PatientRoutes: Routes = [
   {
@@ -25,6 +26,14 @@ export const PatientRoutes: Routes = [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },
           { path: 'overview', component: PatientOverviewPageComponent },
           { path: 'visit/:visitId', component: VisitDetailsPageComponent },
+          {
+            path: 'visit/:visitId/lab-test/new',
+            component: LababoratoryFormComponent,
+          },
+          {
+            path: 'visit/:visitId/lab-test/edit/:labTestId',
+            component: LababoratoryFormComponent,
+          },
         ],
       },
     ],

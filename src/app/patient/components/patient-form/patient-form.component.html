@@ -1,6 +1,6 @@
 <div class="col-12">
   <div class="card">
-    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="this.entityForm" (ngSubmit)="onSubmit()">
       <h5>Patient information</h5>
       <div class="p-fluid p-formgrid grid">
         <div class="field col-12 md:col-6">
@@ -144,7 +144,7 @@
         type="submit"
         label="Save"
         class="w-full p-2 text-xl"
-        [disabled]="patientForm.invalid"
+        [disabled]="this.entityForm.invalid"
       ></button>
     </form>
   </div>

@@ -1,5 +1,6 @@
 import {
   Component,
+  DestroyRef,
   ElementRef,
   OnInit,
   ViewChild,
@@ -13,6 +14,7 @@ import { MenuModule } from 'primeng/menu';
 
 import { AuthService } from '@app/auth/auth.service';
 import { LayoutService } from '../../services/app.layout.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-topbar',
@@ -30,6 +32,7 @@ export class TopBarComponent implements OnInit {
   @ViewChild('topbarmenu') menu!: ElementRef;
 
   private authService = inject(AuthService);
+  private destrotRef = inject(DestroyRef);
 
   constructor(public layoutService: LayoutService) {}
 
@@ -39,7 +42,10 @@ export class TopBarComponent implements OnInit {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
         command: () => {
-          this.authService.initiateLogout().subscribe();
+          this.authService
+            .initiateLogout()
+            .pipe(takeUntilDestroyed(this.destrotRef))
+            .subscribe();
         },
       },
     ];

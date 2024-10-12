@@ -56,7 +56,7 @@ export class ListDoctorPageComponent {
   }
 
   private loadDoctors(): void {
-    this.doctorService.getDoctors().subscribe({
+    this.doctorService.getAll().subscribe({
       next: (doctors) => this.doctors.set(doctors),
     });
   }
@@ -102,7 +102,7 @@ export class ListDoctorPageComponent {
   onConfirmDelete(): void {
     const doctorToDelete = this.doctor();
     if (doctorToDelete && doctorToDelete.id) {
-      this.doctorService.deleteDoctor(doctorToDelete.id).subscribe({
+      this.doctorService.delete(doctorToDelete.id).subscribe({
         next: (success) => {
           if (success) {
             this.doctors.update((currentdoctors) =>

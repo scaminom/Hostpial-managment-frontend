@@ -1,0 +1,56 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="this.entityForm" (ngSubmit)="onSubmit()">
+      <h5>Lab Test</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="labType">Test Type</label>
+          <input
+            pInputText
+            id="labType"
+            type="text"
+            formControlName="labType"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="labType"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="name">Name</label>
+          <input pInputText id="name" type="text" formControlName="name" />
+          <small class="p-error">
+            <arv-validation-messages for="name"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="status">Status</label>
+          <p-dropdown
+            [options]="statusItems()"
+            optionLabel="name"
+            formControlName="status"
+            placeholder="Select a status"
+          ></p-dropdown>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="results">Results</label>
+          <input
+            pInputText
+            id="results"
+            type="text"
+            formControlName="results"
+          />
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="w-full p-2 text-xl"
+        [disabled]="!this.entityForm.valid"
+      ></button>
+    </form>
+  </div>
+</div>
