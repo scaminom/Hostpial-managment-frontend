@@ -6,7 +6,7 @@ import {
   DoctorRegistrationParams,
   DoctorUpdateRequestParams,
 } from '../interfaces/doctor.interface';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { IFacade } from '@app/core/interfaces/facade.interface';
 
@@ -29,29 +29,32 @@ export class DoctorFacade
     return this.doctorService.getAll();
   }
 
-  createEntity(params: DoctorRegistrationParams): void {
-    this.doctorService.create(params).subscribe({
-      next: () => {
+  createEntity(params: DoctorRegistrationParams): Observable<Doctor> {
+    return this.doctorService.create(params).pipe(
+      tap(() => {
         this.messageService.showSuccessMessage('Doctor created successfully');
         this.router.navigate(['/doctor']);
-      },
-    });
+      }),
+    );
   }
 
-  updateEntity(id: number, doctorData: DoctorUpdateRequestParams): void {
-    this.doctorService.update(id, doctorData).subscribe({
-      next: () => {
+  updateEntity(
+    id: number,
+    doctorData: DoctorUpdateRequestParams,
+  ): Observable<Doctor> {
+    return this.doctorService.update(id, doctorData).pipe(
+      tap(() => {
         this.messageService.showSuccessMessage('Doctor updated successfully');
         this.router.navigate(['/doctor']);
-      },
-    });
+      }),
+    );
   }
 
-  deleteEntity(id: number): void {
-    this.doctorService.delete(id).subscribe({
-      next: () => {
+  deleteEntity(id: number): Observable<boolean> {
+    return this.doctorService.delete(id).pipe(
+      tap(() => {
         this.messageService.showSuccessMessage('Doctor deleted successfully');
-      },
-    });
+      }),
+    );
   }
 }

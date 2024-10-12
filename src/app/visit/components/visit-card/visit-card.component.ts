@@ -19,7 +19,7 @@ export class VisitCardComponent {
   onView(): void {
     this.router.navigate(['..', 'visit', this.visit().id], {
       relativeTo: this.route,
-      queryParams: { activeTab: 0 },
+      queryParams: { activeTab: 'overview' },
       queryParamsHandling: 'merge',
     });
   }

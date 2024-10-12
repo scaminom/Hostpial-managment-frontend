@@ -34,7 +34,11 @@
       </div>
     </div>
 
-    <p-tabView class="mt-4" [(activeIndex)]="activeTabIndex">
+    <p-tabView
+      class="mt-4"
+      [(activeIndex)]="activeTabIndex"
+      (activeIndexChange)="onTabChange($event)"
+    >
       <p-tabPanel header="Overview">
         <ng-template pTemplate="content">
           <p>{{ visit.overview || "No information" }}</p>

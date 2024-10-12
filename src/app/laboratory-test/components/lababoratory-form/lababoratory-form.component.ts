@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TemplateFormComponent } from '@app/core/components/template-form.component';
 import { LaboratoryTestsFacade } from '@app/laboratory-test/helpers/laboratory-tests.facade';
@@ -10,6 +11,7 @@ import {
 import { LaboratoryResultsFormStrategy } from '@app/laboratory-test/strategies/laboratory-results-form.strategy';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { ReactiveValidationModule } from 'angular-reactive-validation';
+import { pipe } from 'rxjs';
 @Component({
   selector: 'app-lababoratory-form',
   standalone: true,
@@ -37,7 +39,21 @@ export class LababoratoryFormComponent extends TemplateFormComponent<
       visitId: visitId,
     };
 
-    this.entityFacade.createEntity(data);
+    this.entityFacade
+      .createEntity(data)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.navigateBack());
+  }
+
+  protected override updateEntity(
+    entityData: LabResultsUpdateRequestParams,
+  ): void {
+    if (this.entityId) {
+      this.entityFacade
+        .updateEntity(this.entityId, entityData)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.navigateBack());
+    }
   }
 
   protected override checkEditMode(): void {
@@ -50,6 +66,19 @@ export class LababoratoryFormComponent extends TemplateFormComponent<
       } else {
         console.error('Lab Test ID not found in the current route');
       }
+    }
+  }
+
+  private navigateBack(): void {
+    const patientId = this.route.parent?.snapshot.paramMap.get('patientId');
+    const visitId = this.route.snapshot.paramMap.get('visitId');
+    if (patientId && visitId) {
+      this.router.navigate(['/patient', patientId, 'visit', visitId], {
+        queryParams: { activeTab: 'lab-tests' },
+        queryParamsHandling: 'merge',
+      });
+    } else {
+      console.error('Patient ID or Visit ID not found in the current route');
     }
   }
 }

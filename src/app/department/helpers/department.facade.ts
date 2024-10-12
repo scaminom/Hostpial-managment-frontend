@@ -48,37 +48,42 @@ export class DepartmentFacade
     );
   }
 
-  createEntity(departmentData: DepartmentCreationParams): void {
-    this.departmentService.create({ department: departmentData }).subscribe({
-      next: () => {
+  createEntity(
+    departmentData: DepartmentCreationParams,
+  ): Observable<Department> {
+    return this.departmentService.create({ department: departmentData }).pipe(
+      tap(() => {
         this.messageService.showSuccessMessage(
           'Department created successfully',
         );
         this.router.navigate(['/department']);
-      },
-    });
+      }),
+    );
   }
 
-  updateEntity(id: number, departmentData: DepartmentCreationParams): void {
-    this.departmentService
+  updateEntity(
+    id: number,
+    departmentData: DepartmentCreationParams,
+  ): Observable<Department> {
+    return this.departmentService
       .update(id, { department: departmentData })
-      .subscribe({
-        next: () => {
+      .pipe(
+        tap(() => {
           this.messageService.showSuccessMessage(
             'Department updated successfully',
           );
           this.router.navigate(['/department']);
-        },
-      });
+        }),
+      );
   }
 
-  deleteEntity(id: number): void {
-    this.departmentService.delete(id).subscribe({
-      next: () => {
+  deleteEntity(id: number): Observable<boolean> {
+    return this.departmentService.delete(id).pipe(
+      tap(() => {
         this.messageService.showSuccessMessage(
           'Department deleted successfully',
         );
-      },
-    });
+      }),
+    );
   }
 }

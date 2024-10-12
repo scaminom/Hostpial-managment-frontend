@@ -1,10 +1,12 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   OnInit,
   inject,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LaboratoryTestsFacade } from '@app/laboratory-test/helpers/laboratory-tests.facade';
 import { LaboratoryResults } from '@app/laboratory-test/interfaces/laboratory-test.interface';
@@ -23,13 +25,17 @@ export class LababoratoryTestTableComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private labTestFacade = inject(LaboratoryTestsFacade);
+  private destroyRef = inject(DestroyRef);
 
   laboratoryResults = this.labTestFacade.labTests;
   deleteLabTestDialog = signal(false);
   labTestToDelete = signal<number | null>(null);
 
   ngOnInit() {
-    this.labTestFacade.getAllEntities().subscribe();
+    this.labTestFacade
+      .getAllEntities()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 
   getStatusTest(status: string): Severity {
@@ -69,7 +75,10 @@ export class LababoratoryTestTableComponent implements OnInit {
   deleteLabTest() {
     const labTestId = this.labTestToDelete();
     if (labTestId !== null) {
-      this.labTestFacade.deleteEntity(labTestId);
+      this.labTestFacade
+        .deleteEntity(labTestId)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe();
       this.deleteLabTestDialog.set(false);
       this.labTestToDelete.set(null);
     }

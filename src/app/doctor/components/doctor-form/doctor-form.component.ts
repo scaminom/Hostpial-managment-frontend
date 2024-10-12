@@ -13,6 +13,7 @@ import { DoctorFacade } from '@app/doctor/helpers/doctor.facade';
 
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { DoctorFormStrategy } from '@app/doctor/strategies/doctor-form.strategy';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-doctor-form',
@@ -36,6 +37,9 @@ export class DoctorFormComponent extends TemplateFormComponent<
   }
 
   private loadDepartments(): void {
-    this.departmentFacade.getAllEntities().subscribe();
+    this.departmentFacade
+      .getAllEntities()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe();
   }
 }

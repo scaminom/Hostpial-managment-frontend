@@ -27,7 +27,6 @@ export class LaboratoryTestsFacade
   private route = inject(ActivatedRoute);
 
   labTest = signal<LaboratoryResults | null>(null);
-
   private labTestsSignal = signal<LaboratoryResults[]>([]);
   labTests = computed(() => this.labTestsSignal());
 
@@ -47,48 +46,52 @@ export class LaboratoryTestsFacade
     );
   }
 
-  createEntity(params: LabResultsRegistrationParams): void {
-    this.labTestsService.create(params).subscribe({
-      next: (newLabTest) => {
+  createEntity(
+    params: LabResultsRegistrationParams,
+  ): Observable<LaboratoryResults> {
+    return this.labTestsService.create(params).pipe(
+      tap((newLabTest) => {
         this.labTestsSignal.update((tests) => [...tests, newLabTest]);
         this.messageService.showSuccessMessage(
           'Laboratory test created successfully',
         );
         this.navigateBack();
-      },
-    });
+      }),
+    );
   }
 
-  updateEntity(id: number, doctorData: LabResultsUpdateRequestParams): void {
-    this.labTestsService.update(id, doctorData).subscribe({
-      next: (updatedLabTest) => {
+  updateEntity(
+    id: number,
+    labTestData: LabResultsUpdateRequestParams,
+  ): Observable<LaboratoryResults> {
+    return this.labTestsService.update(id, labTestData).pipe(
+      tap((updatedLabTest) => {
         this.labTestsSignal.update((tests) =>
           tests.map((test) => (test.id === id ? updatedLabTest : test)),
         );
         this.messageService.showSuccessMessage(
           'Laboratory test updated successfully',
         );
-        this.navigateBack();
-      },
-    });
+      }),
+    );
   }
-  deleteEntity(id: number): void {
-    this.labTestsService.delete(id).subscribe({
-      next: () => {
+
+  deleteEntity(id: number): Observable<boolean> {
+    return this.labTestsService.delete(id).pipe(
+      tap(() => {
         this.messageService.showSuccessMessage(
           'Laboratory test deleted successfully',
         );
         this.labTestsSignal.update((tests) =>
           tests.filter((test) => test.id !== id),
         );
-      },
-    });
+      }),
+    );
   }
 
   private navigateBack(): void {
     const patientId = this.route.snapshot.paramMap.get('patientId');
     const visitId = this.route.snapshot.paramMap.get('visitId');
-
     if (patientId && visitId) {
       this.router.navigate(['/patient', patientId, 'visit', visitId], {
         queryParams: { activeTab: 'lab-tests' },

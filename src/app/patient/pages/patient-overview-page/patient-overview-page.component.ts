@@ -1,4 +1,5 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { PatientCardComponent } from '@app/patient/components/patient-card/patient-card.component';
 import { PatientDetailTabComponent } from '@app/patient/components/patient-detail-tab/patient-detail-tab.component';
@@ -18,6 +19,7 @@ export class PatientOverviewPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private patientFacade = inject(PatientFacade);
   private visitService = inject(VisitService);
+  private destroyRef = inject(DestroyRef);
 
   isLoading = signal(true);
   patient = signal<Patient | null>(null);
@@ -30,8 +32,12 @@ export class PatientOverviewPageComponent implements OnInit {
           const id = +params['patientId'];
 
           return forkJoin({
-            patient: this.patientFacade.getEntity(id),
-            visits: this.visitService.getVisitsByPatientId(id),
+            patient: this.patientFacade
+              .getEntity(id)
+              .pipe(takeUntilDestroyed(this.destroyRef)),
+            visits: this.visitService
+              .getVisitsByPatientId(id)
+              .pipe(takeUntilDestroyed(this.destroyRef)),
           });
         }),
       )
