@@ -6,7 +6,7 @@ import {
   PatientCreationParams,
 } from '../interfaces/patient.interface';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IFacade } from '@app/core/interfaces/facade.interface';
 
 @Injectable({
@@ -19,6 +19,7 @@ export class PatientFacade
   private patientService = inject(PatientService);
   private messageService = inject(MessageWrapedService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   getEntity(id: number): Observable<Patient> {
     return this.patientService.getById(id);

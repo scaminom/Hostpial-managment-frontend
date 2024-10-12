@@ -1,34 +1,100 @@
 import { Injectable, inject } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Validators } from 'angular-reactive-validation';
-import { LaboratoryResults } from '../interfaces/laboratory-test.interface';
+import {
+  LabResultsListResponse,
+  LabResultsRegistrationParams,
+  LabResultsResponse,
+  LabResultsUpdateRequestParams,
+  LaboratoryResults,
+} from '../interfaces/laboratory-test.interface';
+import { IHttpService } from '@app/core/interfaces/http-service.interface';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@env/environment';
+import { Observable, map } from 'rxjs';
+import camelcaseKeys from 'camelcase-keys';
+import snakecaseKeys from 'snakecase-keys';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LaboratoryResultsService {
-  private fb = inject(FormBuilder);
+export class LaboratoryResultsService
+  implements
+    IHttpService<
+      LaboratoryResults,
+      LabResultsRegistrationParams,
+      LabResultsUpdateRequestParams
+    >
+{
+  private http = inject(HttpClient);
+  private readonly baseUrl = `${environment.apiUrl}/api/v1/laboratory_results`;
 
-  createForm(): FormGroup {
-    return this.fb.group({
-      labType: ['', Validators.required('Test type is required')],
-      name: ['', Validators.required('Name test is required')],
-      visit: ['', Validators.required('Visit is required')],
-      status: [''],
-      results: [''],
-    });
+  getById(id: number): Observable<LaboratoryResults> {
+    const url = `${this.baseUrl}/${id}`;
+
+    return this.http.get<LabResultsResponse>(url).pipe(
+      map((response) => {
+        return camelcaseKeys(
+          {
+            ...response.data.laboratory_result,
+          },
+          { deep: true },
+        ) as LaboratoryResults;
+      }),
+    );
   }
 
-  patchFormValues(form: FormGroup, laboratoryResults: LaboratoryResults): void {
-    form.patchValue({
-      ...laboratoryResults,
-    });
+  getAll(): Observable<LaboratoryResults[]> {
+    return this.http.get<LabResultsListResponse>(this.baseUrl).pipe(
+      map((response) => {
+        const camelCaseLaboratoryResults = response.data.laboratory_results.map(
+          (laboratoryResult) =>
+            camelcaseKeys({ ...laboratoryResult }) as LaboratoryResults,
+        );
+        return camelCaseLaboratoryResults;
+      }),
+    );
   }
 
-  prepareDepartmentData(form: FormGroup): LaboratoryResults {
-    const formValue = form.value;
-    return {
-      ...formValue,
-    };
+  create(params: LabResultsRegistrationParams): Observable<LaboratoryResults> {
+    const body = snakecaseKeys(
+      { laboratoryResult: { ...params } },
+      { deep: true },
+    );
+
+    return this.http.post<LabResultsResponse>(this.baseUrl, body).pipe(
+      map((response) => {
+        return camelcaseKeys({
+          ...response.data.laboratory_result,
+        }) as LaboratoryResults;
+      }),
+    );
+  }
+
+  update(
+    id: number,
+    params: LabResultsUpdateRequestParams,
+  ): Observable<LaboratoryResults> {
+    const url = `${this.baseUrl}/${id}`;
+    const body = snakecaseKeys(
+      { laboratoryResult: { ...params } },
+      { deep: true },
+    );
+
+    return this.http.put<LabResultsResponse>(url, body).pipe(
+      map((response) => {
+        return camelcaseKeys({
+          ...response.data.laboratory_result,
+        }) as LaboratoryResults;
+      }),
+    );
+  }
+
+  delete(id: number): Observable<boolean> {
+    const url = `${this.baseUrl}/${id}`;
+
+    return this.http.delete<LabResultsResponse>(url).pipe(
+      map(() => {
+        return true;
+      }),
+    );
   }
 }

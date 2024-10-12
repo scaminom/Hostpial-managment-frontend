@@ -8,11 +8,11 @@ import {
 } from '@app/doctor/interfaces/doctor.interface';
 
 import { TemplateFormComponent } from '@app/core/components/template-form.component';
-import { DoctorFormStrategy } from '@app/doctor/strategies/doctor-form.strategy';
 import { DepartmentFacade } from '@app/department/helpers/department.facade';
 import { DoctorFacade } from '@app/doctor/helpers/doctor.facade';
 
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
+import { DoctorFormStrategy } from '@app/doctor/strategies/doctor-form.strategy';
 
 @Component({
   selector: 'app-doctor-form',

@@ -32,9 +32,7 @@ export class PatientService
   }
 
   getAll(): Observable<Patient[]> {
-    const url = this.baseUrl;
-
-    return this.http.get<PatientsReponse>(url).pipe(
+    return this.http.get<PatientsReponse>(this.baseUrl).pipe(
       map((response) => {
         const camelCasePatients = response.data.patients.map(
           (patient) => camelcaseKeys({ ...patient }) as Patient,

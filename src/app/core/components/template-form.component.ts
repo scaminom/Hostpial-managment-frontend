@@ -59,8 +59,9 @@ export abstract class TemplateFormComponent<T, CreateParams, UpdateParams>
 
   protected retrieveEntity(id: number): void {
     this.entityFacade.getEntity(id).subscribe({
-      next: (entity) =>
-        this.formStrategy.patchFormValues(this.entityForm, entity),
+      next: (entity) => {
+        this.formStrategy.patchFormValues(this.entityForm, entity);
+      },
     });
   }
 }

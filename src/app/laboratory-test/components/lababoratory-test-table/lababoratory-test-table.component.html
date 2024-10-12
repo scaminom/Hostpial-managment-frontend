@@ -31,19 +31,31 @@
           pRipple
           icon="pi pi-pencil"
           class="p-button-rounded p-button-text mr-2"
+          (click)="editLabTest(test.id)"
         ></button>
         <button
           pButton
           pRipple
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger p-button-text"
+          (click)="confirmDeleteLabTest(test)"
         ></button>
       </td>
     </tr>
   </ng-template>
 </p-table>
+
 <p-button
   label="Add Lab Test"
   icon="pi pi-plus"
   styleClass="p-button-success mt-3"
+  (click)="navigateToNewLabTest()"
 ></p-button>
+
+<app-dialog
+  [showDialog]="deleteLabTestDialog()"
+  header="Confirm Laboratory Test Deletion"
+  [itemName]="getLabTestName"
+  (cancelDelete)="deleteLabTestDialog.set(false)"
+  (confirmDelete)="deleteLabTest()"
+></app-dialog>
