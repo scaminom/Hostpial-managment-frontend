@@ -1,0 +1,18 @@
+<div class="flex flex-column align-items-center justify-content-center">
+  <p-card header="Select Visit Type" [style]="{ width: '25rem' }">
+    <div class="flex flex-column align-items-center gap-3">
+      <p-button
+        label="Create Regular Visit"
+        icon="pi pi-calendar"
+        (onClick)="createVisit('regular')"
+        styleClass="p-button-primary"
+      ></p-button>
+      <p-button
+        label="Create Emergency Visit"
+        icon="pi pi-exclamation-triangle"
+        (onClick)="createVisit('emergency')"
+        styleClass="p-button-danger"
+      ></p-button>
+    </div>
+  </p-card>
+</div>

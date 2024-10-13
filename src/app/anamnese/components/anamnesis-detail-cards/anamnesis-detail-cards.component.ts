@@ -7,7 +7,6 @@ import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
   standalone: true,
   imports: [PrimeNGModule],
   templateUrl: './anamnesis-detail-cards.component.html',
-  styles: ``,
 })
 export class AnamnesisDetailCardsComponent {
   anamnesis = input.required<Anamnesis>();

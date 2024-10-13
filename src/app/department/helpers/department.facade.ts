@@ -3,7 +3,8 @@ import { MessageWrapedService } from '@app/shared/services/message-wraped.servic
 import { DropdownItem } from '@shared/interfaces/drop-down-item.interface';
 import {
   Department,
-  DepartmentCreationParams,
+  DepartmentRegistrationParams,
+  DepartmentUpdateRequestParams,
 } from '../interfaces/department.interface';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -17,8 +18,8 @@ export class DepartmentFacade
   implements
     IFacade<
       Department,
-      DepartmentCreationParams,
-      Partial<DepartmentCreationParams>
+      DepartmentRegistrationParams,
+      DepartmentUpdateRequestParams
     >
 {
   private departmentService = inject(DepartmentService);
@@ -49,9 +50,9 @@ export class DepartmentFacade
   }
 
   createEntity(
-    departmentData: DepartmentCreationParams,
+    departmentData: DepartmentRegistrationParams,
   ): Observable<Department> {
-    return this.departmentService.create({ department: departmentData }).pipe(
+    return this.departmentService.create(departmentData).pipe(
       tap(() => {
         this.messageService.showSuccessMessage(
           'Department created successfully',
@@ -63,18 +64,16 @@ export class DepartmentFacade
 
   updateEntity(
     id: number,
-    departmentData: DepartmentCreationParams,
+    departmentData: DepartmentUpdateRequestParams,
   ): Observable<Department> {
-    return this.departmentService
-      .update(id, { department: departmentData })
-      .pipe(
-        tap(() => {
-          this.messageService.showSuccessMessage(
-            'Department updated successfully',
-          );
-          this.router.navigate(['/department']);
-        }),
-      );
+    return this.departmentService.update(id, departmentData).pipe(
+      tap(() => {
+        this.messageService.showSuccessMessage(
+          'Department updated successfully',
+        );
+        this.router.navigate(['/department']);
+      }),
+    );
   }
 
   deleteEntity(id: number): Observable<boolean> {

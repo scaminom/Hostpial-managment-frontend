@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { Visit } from '@app/visit/interfaces/visit.interface';
 
-type Severity = 'success' | 'warning' | 'danger' | 'info';
+type Severity = 'success' | 'warning' | 'danger' | 'info' | 'contrast';
 
 @Component({
   selector: 'app-visit-card',
@@ -26,12 +26,14 @@ export class VisitCardComponent {
 
   getPrioritySeverity(priority: string): Severity {
     switch (priority.toLowerCase()) {
-      case 'high':
+      case 'urgent':
         return 'danger';
-      case 'medium':
+      case 'high':
         return 'warning';
+      case 'medium':
+        return 'info';
       case 'low':
-        return 'success';
+        return 'contrast';
       default:
         return 'info';
     }

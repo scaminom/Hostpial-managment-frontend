@@ -10,7 +10,7 @@ export interface Prescription extends PrescriptionBase {
   id: number;
 }
 
-export interface PrescripitionCreationParams extends Prescription {
+export interface PrescripitionCreationParams extends PrescriptionBase {
   visitId: number;
 }
 

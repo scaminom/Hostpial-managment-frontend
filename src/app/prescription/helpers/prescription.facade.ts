@@ -23,32 +23,19 @@ export class PrescriptionFacade
   private prescriptionService = inject(PrescriptionService);
   private messageService = inject(MessageWrapedService);
 
-  prescription = signal<Prescription | null>(null);
-  private prescriptionsSignal = signal<Prescription[]>([]);
-  prescriptions = computed(() => this.prescriptionsSignal());
-
   getEntity(id: number): Observable<Prescription> {
-    return this.prescriptionService.getById(id).pipe(
-      tap((prescription) => {
-        this.prescription.set(prescription);
-      }),
-    );
+    return this.prescriptionService.getById(id);
   }
 
   getAllEntities(): Observable<Prescription[]> {
-    return this.prescriptionService.getAll().pipe(
-      tap((prescriptions) => {
-        this.prescriptionsSignal.set(prescriptions);
-      }),
-    );
+    return this.prescriptionService.getAll();
   }
 
   createEntity(
     params: PrescriptionRegistrationParams,
   ): Observable<Prescription> {
     return this.prescriptionService.create(params).pipe(
-      tap((newPrescription) => {
-        this.prescriptionsSignal.update((tests) => [...tests, newPrescription]);
+      tap(() => {
         this.messageService.showSuccessMessage(
           'Prescription created successfully',
         );
@@ -61,12 +48,7 @@ export class PrescriptionFacade
     prescriptionData: PrescriptionUpdateRequestParams,
   ): Observable<Prescription> {
     return this.prescriptionService.update(id, prescriptionData).pipe(
-      tap((updatedPrescription) => {
-        this.prescriptionsSignal.update((prescriptions) =>
-          prescriptions.map((prescription) =>
-            prescription.id === id ? updatedPrescription : prescription,
-          ),
-        );
+      tap(() => {
         this.messageService.showSuccessMessage(
           'Prescription updated successfully',
         );
@@ -79,9 +61,6 @@ export class PrescriptionFacade
       tap(() => {
         this.messageService.showSuccessMessage(
           'Prescription deleted successfully',
-        );
-        this.prescriptionsSignal.update((prescriptions) =>
-          prescriptions.filter((prescription) => prescription.id !== id),
         );
       }),
     );

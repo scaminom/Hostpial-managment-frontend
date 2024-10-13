@@ -1,74 +1,28 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { Observable, map } from 'rxjs';
+import { Injectable } from '@angular/core';
 import {
   Department,
-  DepartmentParams,
-  DepartmentReponse,
-  DepartmentsReponse,
+  DepartmentRegistrationParams,
+  DepartmentUpdateRequestParams,
 } from '../interfaces/department.interface';
-import { IHttpService } from '@app/core/interfaces/http-service.interface';
+import { BaseHttpService } from '@app/core/services/base-http.service';
+import { environment } from '@env/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class DepartmentService
-  implements
-    IHttpService<Department, DepartmentParams, Partial<DepartmentParams>>
-{
-  private http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/api/v1/departments`;
+export class DepartmentService extends BaseHttpService<
+  Department,
+  DepartmentRegistrationParams,
+  DepartmentUpdateRequestParams
+> {
+  protected baseUrl = `${environment.apiUrl}/api/v1/departments`;
+  protected override entityName = 'department';
 
-  getById(id: number): Observable<Department> {
-    const url = `${this.baseUrl}/${id}`;
-
-    return this.http.get<DepartmentReponse>(url).pipe(
-      map((response) => {
-        return response.data.department;
-      }),
-    );
+  protected override extractSingleItem(response: any) {
+    return response.data.department;
   }
 
-  getAll(): Observable<Department[]> {
-    return this.http.get<DepartmentsReponse>(this.baseUrl).pipe(
-      map((response) => {
-        return response.data.departments;
-      }),
-    );
-  }
-
-  create(departmentParams: DepartmentParams): Observable<Department> {
-    const body = { department: { ...departmentParams.department } };
-
-    return this.http.post<DepartmentReponse>(this.baseUrl, body).pipe(
-      map((response) => {
-        return response.data.department;
-      }),
-    );
-  }
-
-  update(
-    id: number,
-    departmentParams: DepartmentParams,
-  ): Observable<Department> {
-    const url = `${this.baseUrl}/${id}`;
-    const body = { department: { ...departmentParams.department } };
-
-    return this.http.put<DepartmentReponse>(url, body).pipe(
-      map((response) => {
-        return response.data.department;
-      }),
-    );
-  }
-
-  delete(id: number): Observable<boolean> {
-    const url = `${this.baseUrl}/${id}`;
-
-    return this.http.delete<DepartmentReponse>(url).pipe(
-      map(() => {
-        return true;
-      }),
-    );
+  protected override extractArrayItems(response: any): any[] {
+    return response.data.departments;
   }
 }

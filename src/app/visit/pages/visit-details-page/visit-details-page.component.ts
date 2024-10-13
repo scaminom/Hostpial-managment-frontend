@@ -1,5 +1,12 @@
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnamnesisDetailCardsComponent } from '@app/anamnese/components/anamnesis-detail-cards/anamnesis-detail-cards.component';
 import { LababoratoryTestTableComponent } from '@app/laboratory-test/components/lababoratory-test-table/lababoratory-test-table.component';
@@ -7,7 +14,7 @@ import { PrescriptionTableComponent } from '@app/prescription/components/prescri
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { Visit } from '@app/visit/interfaces/visit.interface';
 import { VisitService } from '@app/visit/services/visit.service';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, switchMap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -21,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     AnamnesisDetailCardsComponent,
   ],
   templateUrl: './visit-details-page.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisitDetailsPageComponent implements OnInit {
   visit = signal<Visit | null>(null);
@@ -45,21 +53,16 @@ export class VisitDetailsPageComponent implements OnInit {
           id: +params['visitId'],
           activeTab: queryParams['activeTab'] as string,
         })),
+        switchMap(({ id, activeTab }) =>
+          this.visitService
+            .getById(id)
+            .pipe(map((visit) => ({ visit, activeTab }))),
+        ),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe(({ id, activeTab }) => {
-        this.loadVisit(id);
+      .subscribe(({ visit, activeTab }) => {
+        this.visit.set(visit);
         this.updateActiveTab(activeTab);
-      });
-  }
-
-  private loadVisit(id: number): void {
-    this.visitService
-      .getVisitById(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (visit) => this.visit.set(visit),
-        error: (error) => console.error('Error loading visit:', error),
       });
   }
 

@@ -41,7 +41,7 @@ export class PatientFacade
     id: number,
     patientData: PatientCreationParams,
   ): Observable<Patient> {
-    return this.patientService.update(id, { patient: patientData }).pipe(
+    return this.patientService.update(id, patientData).pipe(
       tap(() => {
         this.messageService.showSuccessMessage('Patient updated successfully');
         this.router.navigate(['/patient']);

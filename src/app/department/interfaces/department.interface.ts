@@ -1,12 +1,28 @@
 import { ApiResponse } from '@shared/interfaces/default-response.interface';
 
-export interface Department {
-  id: number;
+interface DepartmentBase {
   name: string;
   floor: string;
 }
 
-export type DepartmentCreationParams = Omit<Department, 'id'>;
-export type DepartmentReponse = ApiResponse<{ department: Department }>;
-export type DepartmentsReponse = ApiResponse<{ departments: Department[] }>;
-export type DepartmentParams = { department: Omit<Department, 'id'> };
+export interface Department extends DepartmentBase {
+  id: number;
+}
+
+export type DepartmentCreationParams = DepartmentBase;
+
+export type DepartmentUpdateParams = Partial<Department>;
+
+export type DepartmentResponse = ApiResponse<{ department: Department }>;
+
+export type DepartmentListResponse = ApiResponse<{
+  departments: Department[];
+}>;
+
+export interface DepartmentRegistrationParams {
+  department: DepartmentCreationParams;
+}
+
+export interface DepartmentUpdateRequestParams {
+  department: DepartmentUpdateParams;
+}
