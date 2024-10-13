@@ -9,14 +9,12 @@
         [severity]="patient().gender === 'M' ? 'info' : 'success'"
         class="mb-2"
       ></p-tag>
-      <button
-        pButton
-        pRipple
+      <p-splitButton
         label="Register new visit"
-        icon="pi pi-plus"
-        class="p-button-success"
-        routerLink="/doctor/new"
-      ></button>
+        [model]="visitSelectionItems"
+        styleClass="p-button-raised p-button-primary"
+        class="text-xl font-bold"
+      />
     </div>
   </div>
   <div class="grid">

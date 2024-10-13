@@ -4,19 +4,40 @@ import { MedicalRecord } from '@app/medical-record/interfaces/medical-record.int
 import { Prescription } from '@app/prescription/interfaces/prescription.interface';
 import { ApiResponse } from '@app/shared/interfaces/default-response.interface';
 
+export enum VisitType {
+  Regular = 'regular',
+  Emergency = 'emergency',
+}
+
+interface VisitBase {
+  priorityLevel: string;
+  visitType: VisitType;
+  medicalRecordId: number;
+  doctorId: number;
+}
+
+export interface RegularVisit extends VisitBase {
+  room: string;
+}
+
+export interface EmergencyVisit extends VisitBase {}
+
+export type VisitCreationParams = RegularVisit | EmergencyVisit;
+
 export interface Visit {
   id: number;
-  room: string;
-  visitType: string;
+  visitType: VisitType;
   priorityLevel: string;
   createdAt: string;
-  doctor: Doctor;
+  room?: string;
   patientName: string;
-  overview: string;
+  doctor: Doctor;
+  medicalRecord: MedicalRecord;
   prescriptions: Prescription[];
   laboratoryResults: LaboratoryResults[];
-  medicalRecord: MedicalRecord;
 }
+
+export type VisitUpdateParams = Partial<Omit<Visit, 'id'>>;
 
 export type VisitResponse = ApiResponse<{ visit: Visit }>;
 export type VisitsResponse = ApiResponse<{ visits: Visit[] }>;

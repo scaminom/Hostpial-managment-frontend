@@ -45,7 +45,7 @@
 <app-dialog
   [showDialog]="deletePrescriptionDialog()"
   header="Confirm Laboratory Test Deletion"
-  [itemName]="getPrescriptionName"
-  (cancelDelete)="deletePrescriptionDialog.set(false)"
+  [itemName]="prescriptionName()"
+  (cancelDelete)="onCancelDeletePrescription()"
   (confirmDelete)="deletePrescription()"
 ></app-dialog>

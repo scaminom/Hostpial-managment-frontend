@@ -1,79 +1,43 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import snakecaseKeys from 'snakecase-keys';
 import {
   Patient,
-  PatientParams,
-  PatientReponse,
-  PatientsReponse,
+  PatientRegistrationParams,
+  PatientUpdateParams,
 } from '../interfaces/patient.interface';
 import camelcaseKeys from 'camelcase-keys';
 import { environment } from '../../../environments/environment';
-import { IHttpService } from '@app/core/interfaces/http-service.interface';
+import { Visit, VisitsResponse } from '@app/visit/interfaces/visit.interface';
+import { BaseHttpService } from '@app/core/services/base-http.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PatientService
-  implements IHttpService<Patient, PatientParams, Partial<PatientParams>>
-{
-  private http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/api/v1/patients`;
+export class PatientService extends BaseHttpService<
+  Patient,
+  PatientRegistrationParams,
+  PatientUpdateParams
+> {
+  protected baseUrl = `${environment.apiUrl}/api/v1/patients`;
+  protected override entityName = 'patient';
 
-  getById(id: number): Observable<Patient> {
-    const url = `${this.baseUrl}/${id}`;
-
-    return this.http.get<PatientReponse>(url).pipe(
-      map((response) => {
-        return camelcaseKeys({ ...response.data.patient }) as Patient;
-      }),
-    );
+  protected override extractSingleItem(response: any) {
+    return response.data.patient;
   }
 
-  getAll(): Observable<Patient[]> {
-    return this.http.get<PatientsReponse>(this.baseUrl).pipe(
+  protected override extractArrayItems(response: any): any[] {
+    return response.data.patients;
+  }
+
+  getVisitsByPatientId(patientId: number): Observable<Visit[]> {
+    const url = `${this.baseUrl}/${patientId}/visits`;
+
+    return this.http.get<VisitsResponse>(url).pipe(
       map((response) => {
-        const camelCasePatients = response.data.patients.map(
-          (patient) => camelcaseKeys({ ...patient }) as Patient,
+        const camelCaseVisits = response.data.visits.map((visit) =>
+          camelcaseKeys({ ...visit }, { deep: true }),
         );
-        return camelCasePatients;
-      }),
-    );
-  }
-
-  create(patientParams: PatientParams): Observable<Patient> {
-    const url = this.baseUrl;
-    const body = snakecaseKeys({
-      patient: { ...patientParams.patient },
-    });
-
-    return this.http.post<PatientReponse>(url, body).pipe(
-      map((response) => {
-        return camelcaseKeys({ ...response.data.patient }) as Patient;
-      }),
-    );
-  }
-
-  update(id: number, patientParams: PatientParams): Observable<Patient> {
-    const url = `${this.baseUrl}/${id}`;
-    const body = snakecaseKeys({
-      patient: { ...patientParams.patient },
-    });
-
-    return this.http.put<PatientReponse>(url, body).pipe(
-      map((response) => {
-        return camelcaseKeys({ ...response.data.patient }) as Patient;
-      }),
-    );
-  }
-
-  delete(id: number): Observable<boolean> {
-    const url = `${this.baseUrl}/${id}`;
-
-    return this.http.delete<PatientReponse>(url).pipe(
-      map(() => {
-        return true;
+        return camelCaseVisits;
       }),
     );
   }

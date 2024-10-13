@@ -1,12 +1,12 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { ReactiveValidationModule } from 'angular-reactive-validation';
 
 import {
   Department,
-  DepartmentCreationParams,
+  DepartmentRegistrationParams,
+  DepartmentUpdateRequestParams,
 } from '../../interfaces/department.interface';
 
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
@@ -22,8 +22,8 @@ import { DepartmentFormStrategy } from '@app/department/strategies/department-fo
 })
 export class DepartmentFormComponent extends TemplateFormComponent<
   Department,
-  DepartmentCreationParams,
-  Partial<DepartmentCreationParams>
+  DepartmentRegistrationParams,
+  DepartmentUpdateRequestParams
 > {
   protected override entityFacade = inject(DepartmentFacade);
   protected override formStrategy = inject(DepartmentFormStrategy);

@@ -1,0 +1,61 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="entityForm" (ngSubmit)="onSubmit()">
+      <h5>Visit Form</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="visitType">Type</label>
+          <p-dropdown
+            [options]="visitTypeItems()"
+            optionLabel="name"
+            optionValue="code"
+            formControlName="visitType"
+            placeholder="Select a visit type"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages for="visitType"></arv-validation-messages>
+          </small>
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="doctors">Doctors</label>
+          <p-dropdown
+            [options]="doctorsItems()"
+            optionLabel="fullName"
+            optionValue="id"
+            formControlName="doctorId"
+            placeholder="Select a doctor"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages for="doctorId"></arv-validation-messages>
+          </small>
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="priorityLevel">Priority Level</label>
+          <p-dropdown
+            [options]="priorityLevelItems()"
+            optionLabel="name"
+            optionValue="code"
+            formControlName="priorityLevel"
+            placeholder="Select a priority level"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages
+              for="priorityLevel"
+            ></arv-validation-messages>
+          </small>
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="room">Room</label>
+          <input pInputText id="room" type="text" formControlName="room" />
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="w-full p-2 text-xl"
+        [disabled]="!entityForm.valid"
+      ></button>
+    </form>
+  </div>
+</div>

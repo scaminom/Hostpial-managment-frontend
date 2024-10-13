@@ -12,6 +12,7 @@ import { PrescriptionFacade } from '@app/prescription/helpers/prescription.facad
 import { Prescription } from '@app/prescription/interfaces/prescription.interface';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { DialogComponent } from '@app/shared/components/table/dialog/dialog.component';
+import { VisitService } from '@app/visit/services/visit.service';
 
 @Component({
   selector: 'prescription-table',
@@ -24,27 +25,44 @@ export class PrescriptionTableComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private prescriptionFacade = inject(PrescriptionFacade);
+  private visitService = inject(VisitService);
   private destroyRef = inject(DestroyRef);
 
-  prescriptions = this.prescriptionFacade.prescriptions;
+  prescriptions = signal<Prescription[]>([]);
   deletePrescriptionDialog = signal(false);
   prescriptionToDelete = signal<number | null>(null);
+  prescriptionName = signal<string>('');
+
+  private patientId: string | null | undefined = null;
+  private visitId: string | null = null;
 
   ngOnInit(): void {
-    this.prescriptionFacade
-      .getAllEntities()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe();
+    this.initializeIds();
+    this.loadPrescriptions();
   }
 
-  get getPrescriptionName(): string {
-    return this.prescriptionFacade.prescription()?.medication ?? '';
+  private initializeIds(): void {
+    this.patientId = this.route.parent?.snapshot.paramMap.get('patientId');
+    this.visitId = this.route.snapshot.paramMap.get('visitId');
+
+    if (!this.patientId || !this.visitId) {
+      console.error('Patient ID or Visit ID not found in the current route');
+    }
   }
 
-  navigateToNewPrescription() {
-    const patientId = this.route.parent?.snapshot.paramMap.get('patientId');
-    const visitId = this.route.snapshot.paramMap.get('visitId');
-    if (patientId && visitId) {
+  private loadPrescriptions(): void {
+    if (this.visitId) {
+      this.visitService
+        .getPrescriptionsByVisitId(Number(this.visitId))
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((prescriptions) => {
+          this.prescriptions.set(prescriptions);
+        });
+    }
+  }
+
+  navigateToNewPrescription(): void {
+    if (this.patientId && this.visitId) {
       this.router.navigate(['prescription', 'new'], {
         relativeTo: this.route,
         queryParams: { activeTab: 'prescriptions' },
@@ -55,28 +73,31 @@ export class PrescriptionTableComponent implements OnInit {
     }
   }
 
-  confirmDeletePrescription(prescription: Prescription) {
+  confirmDeletePrescription(prescription: Prescription): void {
+    this.prescriptionName.set(prescription.medication);
     this.prescriptionToDelete.set(prescription.id);
-    this.prescriptionFacade.prescription.set(prescription);
     this.deletePrescriptionDialog.set(true);
   }
 
-  deletePrescription() {
-    const prectiptionId = this.prescriptionToDelete();
-    if (prectiptionId !== null) {
+  onCancelDeletePrescription(): void {
+    this.resetDeleteDialog();
+  }
+
+  deletePrescription(): void {
+    const prescriptionId = this.prescriptionToDelete();
+    if (prescriptionId !== null) {
       this.prescriptionFacade
-        .deleteEntity(prectiptionId)
+        .deleteEntity(prescriptionId)
         .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe();
-      this.deletePrescriptionDialog.set(false);
-      this.prescriptionToDelete.set(null);
+        .subscribe(() => {
+          this.updatePrescriptionsAfterDelete(prescriptionId);
+          this.resetDeleteDialog();
+        });
     }
   }
 
-  editPrescription(prescriptionId: number) {
-    const patientId = this.route.parent?.snapshot.paramMap.get('patientId');
-    const visitId = this.route.snapshot.paramMap.get('visitId');
-    if (patientId && visitId) {
+  editPrescription(prescriptionId: number): void {
+    if (this.patientId && this.visitId) {
       this.router.navigate(['prescription', 'edit', prescriptionId], {
         relativeTo: this.route,
         queryParams: { activeTab: 'prescriptions' },
@@ -85,5 +106,17 @@ export class PrescriptionTableComponent implements OnInit {
     } else {
       console.error('Patient ID or Visit ID not found in the current route');
     }
+  }
+
+  private updatePrescriptionsAfterDelete(deletedId: number): void {
+    this.prescriptions.update((prescriptions) =>
+      prescriptions.filter((p) => p.id !== deletedId),
+    );
+  }
+
+  private resetDeleteDialog(): void {
+    this.deletePrescriptionDialog.set(false);
+    this.prescriptionToDelete.set(null);
+    this.prescriptionName.set('');
   }
 }

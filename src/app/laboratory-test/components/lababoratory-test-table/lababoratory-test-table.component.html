@@ -55,7 +55,7 @@
 <app-dialog
   [showDialog]="deleteLabTestDialog()"
   header="Confirm Laboratory Test Deletion"
-  [itemName]="getLabTestName"
-  (cancelDelete)="deleteLabTestDialog.set(false)"
+  [itemName]="labTestName()"
+  (cancelDelete)="onCancelDeleteLabTest()"
   (confirmDelete)="deleteLabTest()"
 ></app-dialog>

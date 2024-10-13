@@ -5,8 +5,8 @@ import { PatientCardComponent } from '@app/patient/components/patient-card/patie
 import { PatientDetailTabComponent } from '@app/patient/components/patient-detail-tab/patient-detail-tab.component';
 import { PatientFacade } from '@app/patient/helpers/patient.facade';
 import { Patient } from '@app/patient/interfaces/patient.interface';
+import { PatientService } from '@app/patient/services/patient.service';
 import { Visit } from '@app/visit/interfaces/visit.interface';
-import { VisitService } from '@app/visit/services/visit.service';
 import { forkJoin, switchMap } from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ import { forkJoin, switchMap } from 'rxjs';
 export class PatientOverviewPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private patientFacade = inject(PatientFacade);
-  private visitService = inject(VisitService);
+  private patientService = inject(PatientService);
   private destroyRef = inject(DestroyRef);
 
   isLoading = signal(true);
@@ -35,7 +35,7 @@ export class PatientOverviewPageComponent implements OnInit {
             patient: this.patientFacade
               .getEntity(id)
               .pipe(takeUntilDestroyed(this.destroyRef)),
-            visits: this.visitService
+            visits: this.patientService
               .getVisitsByPatientId(id)
               .pipe(takeUntilDestroyed(this.destroyRef)),
           });

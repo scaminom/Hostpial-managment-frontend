@@ -1,7 +1,6 @@
 import { ApiResponse } from '@shared/interfaces/default-response.interface';
 
-export interface Patient {
-  id: number;
+interface PatientBase {
   insuranceNumber: string;
   firstName: string;
   lastName: string;
@@ -12,10 +11,26 @@ export interface Patient {
   email: string;
   bloodType: string;
   allergies?: string;
-  birth_palce?: string;
+  birthPlace?: string;
 }
 
-export type PatientReponse = ApiResponse<{ patient: Patient }>;
-export type PatientsReponse = ApiResponse<{ patients: Patient[] }>;
-export type PatientParams = { patient: Omit<Patient, 'id'> };
-export type PatientCreationParams = Omit<Patient, 'id'>;
+export interface Patient extends PatientBase {
+  id: number;
+  medicalRecordId: number;
+}
+
+export type PatientCreationParams = PatientBase;
+
+export type PatientUpdateParams = Partial<PatientBase>;
+
+export type PatientResponse = ApiResponse<{ patient: Patient }>;
+
+export type PatientListResponse = ApiResponse<{ patients: Patient[] }>;
+
+export interface PatientRegistrationParams {
+  patient: PatientCreationParams;
+}
+
+export interface PatientUpdateRequestParams {
+  patient: PatientUpdateParams;
+}
