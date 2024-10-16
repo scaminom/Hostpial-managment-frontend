@@ -59,9 +59,20 @@
 
       <p-tabPanel header="Anamnesis">
         <ng-template pTemplate="content">
-          <anamnesis-detail-cards
-            [anamnesis]="visit.medicalRecord.anamnesis"
-          ></anamnesis-detail-cards>
+          @if (visit.medicalRecord.anamnesis) {
+            <anamnesis-detail-cards
+              [anamnesis]="visit.medicalRecord.anamnesis"
+            ></anamnesis-detail-cards>
+          } @else {
+            <p>No anamnesis data found.</p>
+            <button
+              pButton
+              pRipple
+              label="Register Anamnesis"
+              class="w-full p-2 text-xl"
+              (click)="navigateToNewAnamnesis()"
+            ></button>
+          }
         </ng-template>
       </p-tabPanel>
     </p-tabView>

@@ -5,9 +5,10 @@ import { PatientCardComponent } from '@app/patient/components/patient-card/patie
 import { PatientDetailTabComponent } from '@app/patient/components/patient-detail-tab/patient-detail-tab.component';
 import { PatientFacade } from '@app/patient/helpers/patient.facade';
 import { Patient } from '@app/patient/interfaces/patient.interface';
+import { PatientDataService } from '@app/patient/services/patient-data.service';
 import { PatientService } from '@app/patient/services/patient.service';
 import { Visit } from '@app/visit/interfaces/visit.interface';
-import { forkJoin, switchMap } from 'rxjs';
+import { forkJoin, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-patient-overview-page',
@@ -19,6 +20,7 @@ export class PatientOverviewPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private patientFacade = inject(PatientFacade);
   private patientService = inject(PatientService);
+  private patientDataService = inject(PatientDataService);
   private destroyRef = inject(DestroyRef);
 
   isLoading = signal(true);
@@ -32,9 +34,12 @@ export class PatientOverviewPageComponent implements OnInit {
           const id = +params['patientId'];
 
           return forkJoin({
-            patient: this.patientFacade
-              .getEntity(id)
-              .pipe(takeUntilDestroyed(this.destroyRef)),
+            patient: this.patientFacade.getEntity(id).pipe(
+              takeUntilDestroyed(this.destroyRef),
+              tap((patient) =>
+                this.patientDataService.setCurrentPatient(patient),
+              ),
+            ),
             visits: this.patientService
               .getVisitsByPatientId(id)
               .pipe(takeUntilDestroyed(this.destroyRef)),

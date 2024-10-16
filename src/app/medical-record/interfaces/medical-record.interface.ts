@@ -1,4 +1,4 @@
-import { Anamnesis } from '@app/anamnese/interfaces/anamnese.interface';
+import { Anamnesis } from '@app/anamnesis/interfaces/anamnese.interface';
 
 export interface MedicalRecord {
   id: number;

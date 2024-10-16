@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Anamnesis } from '@app/anamnese/interfaces/anamnese.interface';
+import { Anamnesis } from '@app/anamnesis/interfaces/anamnese.interface';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 
 @Component({

@@ -10,6 +10,7 @@ import { LababoratoryFormComponent } from '@app/laboratory-test/components/labab
 import { PrescriptionFormComponent } from '@app/prescription/components/prescription-form/prescription-form.component';
 import { VisitSelectionComponent } from '@app/visit/components/visit-selection/visit-selection.component';
 import { VisitFormComponent } from '@app/visit/components/visit-form/visit-form.component';
+import { AnamnesisFormComponent } from '@app/anamnesis/components/anamnesis-form/anamnesis-form.component';
 
 export const PatientRoutes: Routes = [
   {
@@ -27,6 +28,7 @@ export const PatientRoutes: Routes = [
           { path: '', redirectTo: 'overview', pathMatch: 'full' },
           { path: 'overview', component: PatientOverviewPageComponent },
           { path: 'visit/new', component: VisitFormComponent },
+          { path: 'anamnesis/new', component: AnamnesisFormComponent },
           { path: 'visit/:visitId', component: VisitDetailsPageComponent },
           { path: 'visits/select', component: VisitSelectionComponent },
           {

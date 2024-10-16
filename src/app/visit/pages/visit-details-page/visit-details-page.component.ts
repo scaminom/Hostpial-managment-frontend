@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AnamnesisDetailCardsComponent } from '@app/anamnese/components/anamnesis-detail-cards/anamnesis-detail-cards.component';
+import { AnamnesisDetailCardsComponent } from '@app/anamnesis/components/anamnesis-detail-cards/anamnesis-detail-cards.component';
 import { LababoratoryTestTableComponent } from '@app/laboratory-test/components/lababoratory-test-table/lababoratory-test-table.component';
 import { PrescriptionTableComponent } from '@app/prescription/components/prescription-table/prescription-table.component';
 import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
@@ -85,5 +85,13 @@ export class VisitDetailsPageComponent implements OnInit {
       Object.keys(this.tabMap).find((key) => this.tabMap[key] === index) ||
       'overview';
     this.updateQueryParams(activeTab);
+  }
+
+  navigateToNewAnamnesis(): void {
+    const patientId = this.route.parent?.snapshot.paramMap.get('patientId');
+    this.router.navigate(['/patient', patientId, 'anamnesis', 'new'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
+    });
   }
 }

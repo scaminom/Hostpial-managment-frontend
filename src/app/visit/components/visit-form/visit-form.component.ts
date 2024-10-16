@@ -63,6 +63,7 @@ export class VisitFormComponent
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
+          this.patientDataService.clearCurrentPatient();
           const patientId =
             this.route.parent?.snapshot.paramMap.get('patientId');
           if (patientId) {
