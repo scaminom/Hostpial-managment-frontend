@@ -1,0 +1,124 @@
+<div class="col-12">
+  <div class="card">
+    <form [formGroup]="this.entityForm" (ngSubmit)="onSubmit()">
+      <h5>Lab Test</h5>
+      <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="currentResidence">Current Residence</label>
+          <input
+            pInputText
+            id="currentResidence"
+            type="text"
+            formControlName="currentResidence"
+          />
+          <small class="p-error">
+            <arv-validation-messages
+              for="currentResidence"
+            ></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="educationLevel">Education Level</label>
+          <input
+            pInputText
+            id="educationLevel"
+            type="text"
+            formControlName="educationLevel"
+          />
+          <small class="p-error">
+            <arv-validation-messages
+              for="educationLevel"
+            ></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="occupation">Occupation</label>
+          <input
+            pInputText
+            id="occupation"
+            type="text"
+            formControlName="occupation"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="occupation"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="maritalStatus">Marital Status</label>
+          <p-dropdown
+            [options]="maritalStatusItems()"
+            optionLabel="name"
+            formControlName="maritalStatus"
+            placeholder="Select a marial status"
+          ></p-dropdown>
+          <small class="p-error">
+            <arv-validation-messages
+              for="maritalStatus"
+            ></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="religion">Religion</label>
+          <input
+            pInputText
+            id="religion"
+            type="text"
+            formControlName="religion"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="religion"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="handedness">Handedness</label>
+          <input
+            pInputText
+            id="handedness"
+            type="text"
+            formControlName="handedness"
+          />
+          <small class="p-error">
+            <arv-validation-messages for="handedness"></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="familyReference">Family Reference</label>
+          <input
+            pInputText
+            id="familyReference"
+            type="text"
+            formControlName="familyReference"
+          />
+          <small class="p-error">
+            <arv-validation-messages
+              for="familyReference"
+            ></arv-validation-messages>
+          </small>
+        </div>
+
+        <div class="field col-12 md:col-6">
+          <label for="genderIdentity">Gender Identity</label>
+          <input
+            pInputText
+            id="genderIdentity"
+            type="text"
+            formControlName="genderIdentity"
+          />
+        </div>
+      </div>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="w-full p-2 text-xl"
+        [disabled]="!this.entityForm.valid"
+      ></button>
+    </form>
+  </div>
+</div>
