@@ -3,7 +3,8 @@ import { PatientService } from '../services/patient.service';
 import { MessageWrapedService } from '@app/shared/services/message-wraped.service';
 import {
   Patient,
-  PatientCreationParams,
+  PatientRegistrationParams,
+  PatientUpdateParams,
 } from '../interfaces/patient.interface';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
@@ -14,7 +15,7 @@ import { IFacade } from '@app/core/interfaces/facade.interface';
 })
 export class PatientFacade
   implements
-    IFacade<Patient, PatientCreationParams, Partial<PatientCreationParams>>
+    IFacade<Patient, PatientRegistrationParams, Partial<PatientUpdateParams>>
 {
   private patientService = inject(PatientService);
   private messageService = inject(MessageWrapedService);
@@ -28,8 +29,8 @@ export class PatientFacade
     return this.patientService.getAll();
   }
 
-  createEntity(patientData: PatientCreationParams): Observable<Patient> {
-    return this.patientService.create({ patient: patientData }).pipe(
+  createEntity(patientData: PatientRegistrationParams): Observable<Patient> {
+    return this.patientService.create(patientData).pipe(
       tap(() => {
         this.messageService.showSuccessMessage('Patient created successfully');
         this.router.navigate(['/patient']);
@@ -39,7 +40,7 @@ export class PatientFacade
 
   updateEntity(
     id: number,
-    patientData: PatientCreationParams,
+    patientData: PatientUpdateParams,
   ): Observable<Patient> {
     return this.patientService.update(id, patientData).pipe(
       tap(() => {

@@ -8,6 +8,8 @@ import { PatientFacade } from '@app/patient/helpers/patient.facade';
 import {
   Patient,
   PatientCreationParams,
+  PatientRegistrationParams,
+  PatientUpdateParams,
 } from '@app/patient/interfaces/patient.interface';
 import { TemplateFormComponent } from '@app/core/components/template-form.component';
 import { PatientFormStrategy } from '@app/patient/strategies/patient-form.strategy';
@@ -20,8 +22,8 @@ import { PatientFormStrategy } from '@app/patient/strategies/patient-form.strate
 })
 export class PatientFormComponent extends TemplateFormComponent<
   Patient,
-  PatientCreationParams,
-  Partial<PatientCreationParams>
+  PatientRegistrationParams,
+  PatientUpdateParams
 > {
   protected override entityFacade = inject(PatientFacade);
   protected override formStrategy = inject(PatientFormStrategy);
