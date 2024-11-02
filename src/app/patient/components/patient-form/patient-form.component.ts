@@ -7,7 +7,6 @@ import { PrimeNGModule } from '@app/prime-ng/prime-ng.module';
 import { PatientFacade } from '@app/patient/helpers/patient.facade';
 import {
   Patient,
-  PatientCreationParams,
   PatientRegistrationParams,
   PatientUpdateParams,
 } from '@app/patient/interfaces/patient.interface';

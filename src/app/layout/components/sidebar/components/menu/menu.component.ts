@@ -16,10 +16,6 @@ export class MenuComponent {
   ngOnInit() {
     this.model = [
       {
-        label: 'Home',
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home' }],
-      },
-      {
         label: 'Data',
         items: [
           {

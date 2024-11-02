@@ -45,8 +45,7 @@ export class AnamnesisFormComponent extends TemplateFormComponent<
     this.entityFacade.createEntity(body).subscribe({
       next: () => {
         this.patientDataService.clearCurrentPatient();
-        const patientId = this.route.snapshot.paramMap.get('patientId');
-        this.router.navigate(['/patient', patientId, 'overview']);
+        this.router.navigate(['../../overview'], { relativeTo: this.route });
       },
     });
   }

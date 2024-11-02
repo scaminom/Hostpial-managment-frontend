@@ -10,6 +10,11 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'patient',
+        pathMatch: 'full',
+      },
+      {
         path: 'patient',
         loadChildren: () =>
           import('./patient/patient.routes').then((m) => m.PatientRoutes),
