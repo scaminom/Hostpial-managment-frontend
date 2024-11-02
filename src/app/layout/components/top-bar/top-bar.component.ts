@@ -15,6 +15,7 @@ import { MenuModule } from 'primeng/menu';
 import { AuthService } from '@app/auth/auth.service';
 import { LayoutService } from '../../services/app.layout.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MessageWrapedService } from '@app/shared/services/message-wraped.service';
 
 @Component({
   selector: 'app-topbar',
@@ -33,6 +34,7 @@ export class TopBarComponent implements OnInit {
 
   private authService = inject(AuthService);
   private destrotRef = inject(DestroyRef);
+  private messageService = inject(MessageWrapedService);
 
   constructor(public layoutService: LayoutService) {}
 
@@ -45,7 +47,11 @@ export class TopBarComponent implements OnInit {
           this.authService
             .initiateLogout()
             .pipe(takeUntilDestroyed(this.destrotRef))
-            .subscribe();
+            .subscribe({
+              next: () => {
+                this.messageService.showSuccessMessage('Logout successful');
+              },
+            });
         },
       },
     ];
