@@ -1,0 +1,23 @@
+<div
+  class="surface-ground h-screen flex align-items-center justify-content-center"
+>
+  <div class="surface-card p-6 shadow-2 border-round w-full md:w-6 lg:w-4">
+    <div class="flex flex-column align-items-center gap-4">
+      <i class="pi pi-lock text-6xl text-primary"></i>
+
+      <h1 class="text-4xl font-bold text-900 mb-0">Unauthorized Access</h1>
+
+      <p class="text-600 text-xl text-center mt-0 mb-4">
+        You don't have permission to access this page.
+      </p>
+
+      <p-button
+        label="Go Back"
+        icon="pi pi-arrow-left"
+        severity="primary"
+        (onClick)="goBack()"
+        [raised]="true"
+      ></p-button>
+    </div>
+  </div>
+</div>
